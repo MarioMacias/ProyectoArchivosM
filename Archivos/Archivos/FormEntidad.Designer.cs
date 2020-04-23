@@ -52,6 +52,7 @@
             this.árbolBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indicePrimarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indiceSecundarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbl_Cabecera = new System.Windows.Forms.Label();
             this.btn_CrearEntidad = new System.Windows.Forms.Button();
             this.btn_Modificar = new System.Windows.Forms.Button();
@@ -60,7 +61,6 @@
             this.btn_Atributo = new System.Windows.Forms.Button();
             this.lb_atributo = new System.Windows.Forms.Label();
             this.tb_modificar = new System.Windows.Forms.TextBox();
-            this.consultaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Entidad)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -230,7 +230,7 @@
             this.indicePrimarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
             this.indicePrimarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.indicePrimarioBToolStripMenuItem.Name = "indicePrimarioBToolStripMenuItem";
-            this.indicePrimarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.indicePrimarioBToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.indicePrimarioBToolStripMenuItem.Text = "Primario B+";
             this.indicePrimarioBToolStripMenuItem.Click += new System.EventHandler(this.indicePrimarioBToolStripMenuItem_Click);
             // 
@@ -239,8 +239,16 @@
             this.indiceSecundarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
             this.indiceSecundarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.indiceSecundarioBToolStripMenuItem.Name = "indiceSecundarioBToolStripMenuItem";
-            this.indiceSecundarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.indiceSecundarioBToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.indiceSecundarioBToolStripMenuItem.Text = "Secundario B+";
+            // 
+            // consultaToolStripMenuItem
+            // 
+            this.consultaToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.consultaToolStripMenuItem.Name = "consultaToolStripMenuItem";
+            this.consultaToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+            this.consultaToolStripMenuItem.Text = "Consulta";
+            this.consultaToolStripMenuItem.Click += new System.EventHandler(this.consultaToolStripMenuItem_Click);
             // 
             // lbl_Cabecera
             // 
@@ -344,14 +352,6 @@
             this.tb_modificar.Name = "tb_modificar";
             this.tb_modificar.Size = new System.Drawing.Size(100, 24);
             this.tb_modificar.TabIndex = 9;
-            // 
-            // consultaToolStripMenuItem
-            // 
-            this.consultaToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.consultaToolStripMenuItem.Name = "consultaToolStripMenuItem";
-            this.consultaToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
-            this.consultaToolStripMenuItem.Text = "Consulta";
-            this.consultaToolStripMenuItem.Click += new System.EventHandler(this.consultaToolStripMenuItem_Click);
             // 
             // FormEntidad
             // 

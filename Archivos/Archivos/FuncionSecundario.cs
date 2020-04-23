@@ -139,7 +139,7 @@ namespace Archivos
         public void asignarDireccionIndiceSecundario()
         {
             Fichero = File.Open(nombreArchivoIDX, FileMode.Open);
-            //MessageBox.Show("Dirrr: " + Fichero.Length.ToString());
+            MessageBox.Show("line 142: Dirrr: " + Fichero.Length.ToString());
             entidades[pos].atributos[indice2].direccion_Indice = Fichero.Length;
             Fichero.Close();
         }
@@ -381,8 +381,8 @@ namespace Archivos
                                 entidades[pos].secundarios.Last().listSecD.Last().listSecDirs.Last().getIteracion += 1;
                             }
                         }
-
                         dir = binaryReader.ReadInt64();
+                        
                         entidades[pos].secundarios.Last().listSecD.Last().listSecDirs.Last().getApSiguiente = dir;
                         if (dir == -1)
                         {
@@ -427,8 +427,6 @@ namespace Archivos
             Fichero.Close();
             /*MessageBox.Show("El siguiente lugar donde se escribira sera en la posicion");
             MessageBox.Show(entidades[pos].secundarios.Last().GetCajon.ToString());*/
-
-
             //Leer todas la direcciones por separado
           
             for (int i = 1; i < entidades[pos].secundarios.Last().getIteracion; ++i)
@@ -464,25 +462,34 @@ namespace Archivos
         /*Metodo para obtener el numero de iteracion que existe en el momento*/
         public int numeroDeIteracion(int ite)
         {
-
             int numIte = 0;
-            //MessageBox.Show("ite: " + ite);
-            if (ite != 8)
-            {
-                numIte = 2040 / (8 + ite);
+            int tam = 8 + ite;
 
+            //MessageBox.Show("ite: " + ite);
+              if (ite != 8)
+              {
+                //numIte = 2040 / (8 + ite);
+                numIte = 1040 / tam;
+
+                //numIte = ite / 1040;
+                //numIte += 8;
+                //int regis = 1040 / tam;
+                //int regis = tam / 1040;
+                //numIte = (regis * tam) + 8;
                 // MessageBox.Show("num de ite: " + numIte); // Se muestra cuantos cajones puede haber
 
                 //int tamA = 8 + (numIte * (ite + 8));
 
                 // MessageBox.Show("Tam total: " + tamA);// Se muestra el tamaño total del archivo
             }
-            if (ite == 8)
-            {
-                //MessageBox.Show("entro?");
-                numIte = 2040 / ite;
-            }
-
+              if (ite == 8)
+              {
+                  //MessageBox.Show("entro?");
+                  //numIte = 2040 / ite;
+                  numIte = 1040 / ite;
+              }
+            //MessageBox.Show("regis: " + regis);
+            MessageBox.Show("num ite: " + numIte);
             return numIte;
         }
         

@@ -166,28 +166,31 @@ namespace Archivos
         public int numeroDeIteracion(int ite)
         {
             int numIte = 0;
+            //numIte = 1040 / (8 + ite); //el de la maestra loca
+            int tam = 8 + ite;
             //MessageBox.Show("ite: " + ite);
-            if (ite != 8)
-            {
-                numIte = 2040 / (8 + ite);
+              if (ite != 8)
+              {
+                 //numIte = 2040 / (8 + ite); el chido del profe
+                 numIte = 1040 / tam; //el de la maestra loca
 
-                // MessageBox.Show("num de ite: " + numIte); // Se muestra cuantos cajones puede haber
+                 // MessageBox.Show("num de ite: " + numIte); // Se muestra cuantos cajones puede haber
 
-                //int tamA = 8 + (numIte * (ite + 8));
+                 //int tamA = 8 + (numIte * (ite + 8));
 
-                // MessageBox.Show("Tam total: " + tamA);// Se muestra el tamaño total del archivo
-            }
-            /*
-            if (ite == 8)
-            {
-                //MessageBox.Show("entro?");
-                numIte = 2040 / ite;
-            }
-            */
+                 // MessageBox.Show("Tam total: " + tamA);// Se muestra el tamaño total del archivo
+             }
+             if (ite == 8)
+             {
+                 //MessageBox.Show("entro?");
+                 //numIte = 2040 / ite;
+                 numIte = 1040 / ite;
+             }
+
             return numIte;
-        }
+         }
 
-        /*get de entidades*/
+            /*get de entidades*/
         public List<Entidad> dameEntidades
         {
             get { return entidades; }

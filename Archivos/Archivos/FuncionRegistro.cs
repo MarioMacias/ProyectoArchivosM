@@ -351,6 +351,7 @@ namespace Archivos
         /*Ordenamos los datos conforme al clave de busqueda*/
         public void ordenarDatosXcB()
         {
+            //indiceCB = indiceA1;
             if (indiceCB != -1)
             {
                 try
@@ -441,7 +442,7 @@ namespace Archivos
             //MessageBox.Show("ite: " + ite);
             if (ite != 8)
             {
-                numIte = 2040 / (8 + ite);
+                numIte = 1040 / (8 + ite);
 
                // MessageBox.Show("num de ite: " + numIte); // Se muestra cuantos cajones puede haber
 

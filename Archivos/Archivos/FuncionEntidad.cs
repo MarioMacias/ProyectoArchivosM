@@ -32,7 +32,8 @@ namespace Archivos
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                nombreArchivo = saveFileDialog.FileName;
+                string nom = saveFileDialog.FileName;
+                nombreArchivo = nom + ".dd";
 
                 Fichero = new FileStream(nombreArchivo, FileMode.Create);
                 Fichero.Close();
