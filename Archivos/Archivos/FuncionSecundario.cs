@@ -139,7 +139,6 @@ namespace Archivos
         public void asignarDireccionIndiceSecundario()
         {
             Fichero = File.Open(nombreArchivoIDX, FileMode.Open);
-            MessageBox.Show("line 142: Dirrr: " + Fichero.Length.ToString());
             entidades[pos].atributos[indice2].direccion_Indice = Fichero.Length;
             Fichero.Close();
         }
@@ -425,8 +424,6 @@ namespace Archivos
                 else { binaryReader.BaseStream.Seek(data, SeekOrigin.Begin); }
             }
             Fichero.Close();
-            /*MessageBox.Show("El siguiente lugar donde se escribira sera en la posicion");
-            MessageBox.Show(entidades[pos].secundarios.Last().GetCajon.ToString());*/
             //Leer todas la direcciones por separado
           
             for (int i = 1; i < entidades[pos].secundarios.Last().getIteracion; ++i)
@@ -516,6 +513,122 @@ namespace Archivos
             this.nombreArchivoDAT = nombreArchivoDAT;
             this.nombreArchivoIDX = nombreArchivoIDX;
             this.nombreArchivo = nombreArchivo;
+        }
+
+        /************************AQUI EMPIEZA HASH*******************************************/
+
+        /*Asignar memoria al indice hash*/
+        public void asignarMemoriaIndiceHash()
+        {
+            object o = new object();
+            long data = 0;
+            long dir = 0;
+            int clave = 0;
+            long temp;
+            Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Read);
+            binaryReader = new BinaryReader(Fichero);
+            binaryReader.BaseStream.Seek(entidades[pos].atributos[indice2].direccion_Indice, SeekOrigin.Begin);
+
+            ///Creo los primeros 7 cajones
+            Secundario s1 = new Secundario(-1);
+            entidades[pos].hash.Add(s1);
+            for (int i = 1; i < 7; ++i)
+            {
+                entidades[pos].hash.Last().AddIndice(-1);
+            }
+
+            ///Leo las 7 direcciones
+            for (int i = 0; i < 7; ++i)
+            {
+                data = binaryReader.ReadInt64();
+                entidades[pos].hash.Last().listSecD[i].getDireccion = data;
+            }
+            Fichero.Close();
+
+            ///Despues leemos los bloques de clave y direccion recorriendo el diccionario 
+            for (int i = 0; i < 7; i++)
+            {
+                if (entidades[pos].hash.Last().listSecD[i].getDireccion != -1)
+                {
+                    Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Read);
+                    binaryReader = new BinaryReader(Fichero);
+                    binaryReader.BaseStream.Seek(entidades[pos].hash.Last().listSecD[i].getDireccion, SeekOrigin.Begin);
+
+                    int cant = numeroDeIteracion(entidades[pos].atributos[indice2].longitud_Tipo);
+                    entidades[pos].hash.Last().listSecD[i].agregarBloquesDirecciones(-1);
+                    for (int j = 1; j < cant; j++)
+                    {
+                        entidades[pos].hash.Last().listSecD[i].listSecDirs.Last().addIndice(-1);
+                    }
+
+                    for (int j = 0; j < cant; j++)
+                    {
+                        clave = binaryReader.ReadInt32();
+                        entidades[pos].hash.Last().listSecD[i].listSecDirs.Last().listIndiceSecundario[j].getClave = clave;
+                        data = binaryReader.ReadInt64();
+                        entidades[pos].hash.Last().listSecD[i].listSecDirs.Last().listIndiceSecundario[j].getDireccion = data;
+                        if (data != -1)
+                        {
+                            entidades[pos].hash.Last().listSecD[i].listSecDirs.Last().getIteracion += 1;
+                        }
+                    }
+                    data = binaryReader.ReadInt64();
+                    entidades[pos].hash.Last().listSecD[i].listSecDirs.Last().getApSiguiente = data;
+                    Fichero.Close();
+                }
+            }
+        }
+
+        //Funcion en hash
+        public int aplicarHash(string s)
+        {
+            int clave = int.Parse(s);
+
+            int res = clave / 7;
+
+            res = res * 7;
+
+            return ((clave - res));
+        }
+
+        //asignar direcciones en las iteraciones de hash
+        public void asignarDirCajH(int index)
+        {
+            Fichero = File.Open(nombreArchivoIDX, FileMode.Open);
+            entidades[pos].hash.Last().listSecD[index].getDireccion = Fichero.Length;
+            Fichero.Close();
+        }
+
+        //Escribir en el archivo 
+        public void escribirDiccionarioHash()
+        {
+            ///Escribimos nuestro diccionario
+            Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
+            Fichero.Seek(entidades[pos].atributos[indice2].direccion_Indice, SeekOrigin.Begin);
+
+            binaryWriter = new BinaryWriter(Fichero);
+
+            for (int s1 = 0; s1 < entidades[pos].hash.Last().listSecD.Count; ++s1)
+            {
+                binaryWriter.Write(entidades[pos].hash.Last().listSecD[s1].getDireccion);
+            }
+            Fichero.Close();
+        }
+
+        //Escribir en los cajones hash
+        public void escribirCajonHash(int index)
+        {
+            Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
+            Fichero.Seek(entidades[pos].hash.Last().listSecD[index].getDireccion, SeekOrigin.Begin);
+
+            binaryWriter = new BinaryWriter(Fichero);
+            for (int s1 = 0; s1 < entidades[pos].hash.Last().listSecD[index].listSecDirs[0].listIndiceSecundario.Count; ++s1)
+            {
+                binaryWriter.Write(int.Parse(entidades[pos].hash.Last().listSecD[index].listSecDirs[0].listIndiceSecundario[s1].getClave.ToString()));
+                binaryWriter.Write(entidades[pos].hash.Last().listSecD[index].listSecDirs[0].listIndiceSecundario[s1].getDireccion);
+            }
+            binaryWriter.Write(entidades[pos].hash.Last().listSecD[index].listSecDirs[0].getApSiguiente);
+            Fichero.Close();
         }
     }
 }

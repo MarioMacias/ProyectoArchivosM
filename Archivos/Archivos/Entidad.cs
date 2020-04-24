@@ -33,7 +33,13 @@ namespace Archivos
         public List<ArbolB> Arboles = new List<ArbolB>();
 
         /*Para los arboles secundarios*/
-       // public List<ArbolB> ArbolSecundario = new List<ArbolB>();
+        // public List<ArbolB> ArbolSecundario = new List<ArbolB>();
+
+        /*para indice hash*/
+        public List<Secundario> hash = new List<Secundario>();
+
+        /*para indice multilista*/
+        public List<Primario> multilista = new List<Primario>();
 
         /*Constructor de una nueva identidad*/
         public Entidad(string sNombre)
@@ -46,7 +52,7 @@ namespace Archivos
             /*Se separa por caracter el nombre de la entidad*/
             foreach (char c in sNombre)
             {
-                this.Nombre[i] = c;////////////
+                this.Nombre[i] = c;
                 i++;
             }
 

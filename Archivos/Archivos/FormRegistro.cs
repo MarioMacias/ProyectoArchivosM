@@ -31,7 +31,8 @@ namespace Archivos
         private int indice2 = -1; // Secundario
         private int indiceA1 = -1; //Arbol primario
         private int indiceA2 = -1; //Arbol secundario
-
+        private int indiceHash = -1; //indice hash
+        private int indiceMultilista = -1; //indice multiliosta
 
         private Registro registro;
         private Primario primario;
@@ -251,14 +252,12 @@ namespace Archivos
                     //Ya no lee el archivo de nuevo
                     if (banderaIDX == false)
                     {
-                        // MessageBox.Show("hola");
                         if (entidades[pos].primarios.Count == 0 || entidades[pos].primarios.Last().primario_Iteracion == entidades[pos].primarios.Last().indice.Count)
                         {
                             banderaIDX = true;
                             fip.asignaDatosNecesarios(entidades, pos, indice1, Fichero, nombreArchivoIDX, nombreArchivo);
                             fip.asignaMemoriaDatosIndice();
                             entidades = fip.dameEntidades;
-                            //fr.asignaDatosDat();
 
                             if (indice2 != -1)
                             {
@@ -275,6 +274,20 @@ namespace Archivos
                                 }
                             }
 
+                            if(indiceHash != -1)
+                            {
+                                fs.listEntidades = entidades;
+                                fs.posicionEntidad = pos;
+                                fs.posicionIndice2 = indiceHash;
+                                // fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
+                                fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
+
+                                if (entidades[pos].secundarios.Count == 0 || (entidades[pos].secundarios.Last().getIteracion == entidades[pos].secundarios.Last().listSecD.Count))
+                                {
+                                    fs.asignarMemoriaIndiceHash();
+                                    entidades = fs.listEntidades;
+                                }
+                            }
                         }
                     }
                 }
@@ -315,6 +328,14 @@ namespace Archivos
                     {
                         fs.asignarMemoriaIndice2();
                         entidades = fs.listEntidades;
+
+                        if (indiceHash != -1)
+                        {
+                            if (entidades[pos].hash.Count == 0 || (entidades[pos].hash.Last().listSecD.Count == 7))
+                            {
+                                fs.asignarMemoriaIndiceHash();
+                            }
+                        }
                     }
                 }
             }
@@ -400,6 +421,33 @@ namespace Archivos
                 }
             }
 
+            if (indiceHash !=-1)
+            {
+                if (entidades[pos].atributos[indice2].direccion_Indice == -1)
+                {
+                    string ex = ".idx";
+                    string aux2 = entidades[pos].atributos[indice2].string_Nombre;
+
+                    fs.listEntidades = entidades;
+                   fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
+
+                    Fichero.Close();
+                }
+                else
+                {
+                    string ex = ".idx";
+                    string aux2 = entidades[pos].atributos[indice2].string_Nombre;
+                    fs.listEntidades = entidades;
+                    fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
+
+                    ///Para no vuelva a leer el archivo
+                    if (entidades[pos].hash.Count == 0 || (entidades[pos].hash.Count == 6))
+                    {
+                        fs.asignarMemoriaIndiceHash();
+                        entidades = fs.listEntidades;
+                    }
+                }
+            }
             escribirDatosData();
             fr.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
         }
@@ -932,9 +980,67 @@ namespace Archivos
                         MessageBox.Show("Se guardo correctamente");
                      }
                 }
-            }else if (indiceA2 != -1)
+            }
+            else if (indiceHash != -1)
             {
+                if (creaListaObjetos()) //se crea la lista con todos los objetos a guardar
+                {
+                    registro = fr.creaNuevoRegistro(datos_registro); //creamos el registro guardando los datos
+                    registro.iteraREG++;
+                    //fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
+                    fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
 
+                    fs.posicionIndice2 = indiceHash;
+
+                    entidades[pos].registros.Add(registro);
+                    fr.lisEntidades = entidades;
+                    fr.asignaDatos();
+                    entidades = fr.lisEntidades;
+                    fs.listEntidades = entidades;
+                    fs.posicionEntidad = pos;
+                    fs.posicionIndice2 = indiceHash;
+
+                    if (entidades[pos].atributos[indiceHash].direccion_Indice != -1)
+                    {
+                        ///Lugar del 0 al 6 para posicionar el cajon 
+                        int lugar = fs.aplicarHash(entidades[pos].registros.Last().element_Registro[indiceHash].ToString());
+
+                        if (entidades[pos].hash.Last().listSecD[lugar].getDireccion != -1)
+                        {
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getClave = entidades[pos].registros.Last().element_Registro[indiceHash];
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getDireccion = entidades[pos].registros.Last().dir_Registro;
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
+                        }
+                        else
+                        {
+                            int cant = 0;
+
+                            entidades[pos].hash.Last().listSecD[lugar].agregarBloquesDirecciones(-1);
+                            cant = fs.numeroDeIteracion(entidades[pos].atributos[indiceHash].longitud_Tipo);
+
+                            for (int i = 1; i < cant; ++i)
+                            {
+                                entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().addIndice(-1);
+                            }
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getClave = entidades[pos].registros.Last().element_Registro[indiceHash];
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getDireccion = entidades[pos].registros.Last().dir_Registro;
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
+                            fs.asignarDirCajH(lugar);
+                        }
+                        fs.escribirDiccionarioHash();
+                        fs.escribirCajonHash(lugar);
+                    }
+                    fr.lisEntidades = entidades;
+                    //escribir el archivo 
+                    fr.escribirArchivoDat();
+                    //ordenar
+                    fr.ordenarDatosXcB();
+                    //las direcciones de los datos
+                    fr.direccionNuevaDatos();
+                    //escribir el registro, data
+                    escribirDatosData();
+                    MessageBox.Show("Se guardo con un solo indice hash.");
+                }
             }
             else if (indiceCB != -1)
             {
@@ -1358,8 +1464,6 @@ namespace Archivos
             dgv_Registro.Rows.Clear();
 
             int j = 0;
-            //MessageBox.Show("ToTAL: " + entidades[pos].registros.Count);
-            //MessageBox.Show("atributos: " + entidades.ElementAt(pos).atributos.Count);
             foreach (Registro regis in entidades[pos].registros)
             {
                 int aux = 0;
@@ -1374,6 +1478,5 @@ namespace Archivos
                 j++;
             }
         }
-
     }
 }

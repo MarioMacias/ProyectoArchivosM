@@ -18,6 +18,8 @@ namespace Archivos
         private int indice2 = -1; //Secundario
         private int indiceA1 = -1; //arbol primario
         private int indiceA2 = -1; //Arbol secundario
+        private int indiceHash = -1; //indice hash
+        private int indiceMultilista = -1; //indice multilista
 
         private Registro registro;
         List<object> datos_registro;
@@ -37,6 +39,38 @@ namespace Archivos
             registro.element_Registro = datos_registro; //se manda la lista de los datos del registro
 
             return registro;
+        }
+
+        /*Se busca en los atributos el que tenga el indice hash*/
+        public int buscaIndiceHash()
+        {
+            int i = 0;
+
+            foreach (Atributo a in entidades.ElementAt(pos).atributos)
+            {
+                if (a.tipo_Indice == 6)
+                {
+                    indiceHash = i;
+                }
+                else { i++; }
+            }
+            return indiceHash;
+        }
+
+        /*Se busca en los atributos el que tenga el indice Multilista*/
+        public int buscaIndiceMultilista()
+        {
+            int i = 0;
+
+            foreach (Atributo a in entidades.ElementAt(pos).atributos)
+            {
+                if (a.tipo_Indice == 7)
+                {
+                    indiceMultilista = i;
+                }
+                else { i++; }
+            }
+            return indiceMultilista;
         }
 
         /*Se busca en los atributos el que tenga el indice primario arbol*/
