@@ -307,5 +307,22 @@ namespace Archivos
             cEntidad.cambia += new ConsultaEntidad.pasar(regresa);
             cEntidad.Show();
         }
+
+        private void hashToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int pos = dgv_Entidad.CurrentRow.Index;
+
+                this.Hide();
+                FormIndiceHash indiceHash = new FormIndiceHash(this, entidades, pos);
+                indiceHash.cambiar += new FormIndiceHash.cambio(direccionIndice);
+                indiceHash.Show();
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una entidad");
+            }
+        }
     }
 }

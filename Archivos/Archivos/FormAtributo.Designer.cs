@@ -322,6 +322,7 @@
             "3",
             "4",
             "5",
+            "6",
             "8"});
             this.cb_Indice.Location = new System.Drawing.Point(380, 418);
             this.cb_Indice.Name = "cb_Indice";

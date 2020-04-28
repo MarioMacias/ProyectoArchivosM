@@ -61,6 +61,7 @@
             this.btn_Atributo = new System.Windows.Forms.Button();
             this.lb_atributo = new System.Windows.Forms.Label();
             this.tb_modificar = new System.Windows.Forms.TextBox();
+            this.hashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Entidad)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -190,7 +191,8 @@
             // 
             this.indiceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.primarioToolStripMenuItem,
-            this.secundarioToolStripMenuItem});
+            this.secundarioToolStripMenuItem,
+            this.hashToolStripMenuItem});
             this.indiceToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.indiceToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Gray;
             this.indiceToolStripMenuItem.Name = "indiceToolStripMenuItem";
@@ -202,7 +204,7 @@
             this.primarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
             this.primarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.primarioToolStripMenuItem.Name = "primarioToolStripMenuItem";
-            this.primarioToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.primarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.primarioToolStripMenuItem.Text = "Primario";
             this.primarioToolStripMenuItem.Click += new System.EventHandler(this.primarioToolStripMenuItem_Click);
             // 
@@ -211,7 +213,7 @@
             this.secundarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.secundarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.secundarioToolStripMenuItem.Name = "secundarioToolStripMenuItem";
-            this.secundarioToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.secundarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.secundarioToolStripMenuItem.Text = "Secundario";
             this.secundarioToolStripMenuItem.Click += new System.EventHandler(this.secundarioToolStripMenuItem_Click);
             // 
@@ -353,6 +355,15 @@
             this.tb_modificar.Size = new System.Drawing.Size(100, 24);
             this.tb_modificar.TabIndex = 9;
             // 
+            // hashToolStripMenuItem
+            // 
+            this.hashToolStripMenuItem.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.hashToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.hashToolStripMenuItem.Name = "hashToolStripMenuItem";
+            this.hashToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hashToolStripMenuItem.Text = "Hash";
+            this.hashToolStripMenuItem.Click += new System.EventHandler(this.hashToolStripMenuItem_Click);
+            // 
             // FormEntidad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -413,6 +424,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Dir_Datos;
         private System.Windows.Forms.DataGridViewTextBoxColumn Dir_SigEntidad;
         private System.Windows.Forms.ToolStripMenuItem consultaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hashToolStripMenuItem;
     }
 }
 

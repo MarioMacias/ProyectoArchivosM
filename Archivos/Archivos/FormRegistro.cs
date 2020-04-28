@@ -32,7 +32,6 @@ namespace Archivos
         private int indiceA1 = -1; //Arbol primario
         private int indiceA2 = -1; //Arbol secundario
         private int indiceHash = -1; //indice hash
-        private int indiceMultilista = -1; //indice multiliosta
 
         private Registro registro;
         private Primario primario;
@@ -188,6 +187,7 @@ namespace Archivos
             indice2 = fr.buscaIndiceSecundario();
             indiceA1 = fr.buscaIndiceAprimario();
             indiceA2 = fr.buscaIndiceAsecundario();
+            indiceHash = fr.buscaIndiceHash();
 
             //Obtenemos el archivo indice, una vez buscado
             if (indice1 != -1)
@@ -423,21 +423,28 @@ namespace Archivos
 
             if (indiceHash !=-1)
             {
-                if (entidades[pos].atributos[indice2].direccion_Indice == -1)
+                if (entidades[pos].atributos[indiceHash].direccion_Indice == -1)
                 {
                     string ex = ".idx";
-                    string aux2 = entidades[pos].atributos[indice2].string_Nombre;
+                    string aux2 = entidades[pos].atributos[indiceHash].string_Nombre;
 
                     fs.listEntidades = entidades;
-                   fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
+
+                    nombreArchivoIDX = aux2;
+                    nombreArchivoIDX += ex;
+                    Fichero = new FileStream(nombreArchivoIDX, FileMode.Create);
+                    fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
 
                     Fichero.Close();
                 }
                 else
                 {
                     string ex = ".idx";
-                    string aux2 = entidades[pos].atributos[indice2].string_Nombre;
+                    string aux2 = entidades[pos].atributos[indiceHash].string_Nombre;
                     fs.listEntidades = entidades;
+                    nombreArchivoIDX = aux2;
+                    nombreArchivoIDX += ex;
+                    Fichero = new FileStream(nombreArchivoIDX, FileMode.Create);
                     fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
 
                     ///Para no vuelva a leer el archivo
@@ -493,6 +500,7 @@ namespace Archivos
                 {
                     registro = fr.creaNuevoRegistro(datos_registro); //creamos el registro guardando los datos
                     registro.iteraREG++;
+
                     if (entidades[pos].atributos[indice1].direccion_Indice != -1) //Verificamos si el indice existe
                     {
                         for (int i = 0; i < entidades[pos].primarios.Count; ++i) //recorremos la lista de primarios
@@ -512,17 +520,46 @@ namespace Archivos
                         else //Si no, lo ponemos en el archivo, ya que no es igual
                         {
                             entidades[pos].registros.Add(registro); //Agrega el registro a la lista que esta en las entidades
-                            //Refresh();
                             fr.lisEntidades = entidades;
                             fr.asignaDatos(); //ponemos los datos en el archivos
                             entidades = fr.lisEntidades;
+
+                            if (indiceHash !=-1)
+                            {
+                                ///Lugar del 0 al 6 para posicionar el cajon 
+                                int lugar = fs.aplicarHash(entidades[pos].registros.Last().element_Registro[indiceHash].ToString());
+
+                                if (entidades[pos].hash.Last().listSecD[lugar].getDireccion != -1)
+                                {
+                                    entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getClave = entidades[pos].registros.Last().element_Registro[indiceHash];
+                                    entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getDireccion = entidades[pos].registros.Last().dir_Registro;
+                                    entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
+                                }
+                                else
+                                {
+                                    int cant = 0;
+
+                                    entidades[pos].hash.Last().listSecD[lugar].agregarBloquesDirecciones(-1);
+                                    cant = fs.numeroDeIteracion(entidades[pos].atributos[indiceHash].longitud_Tipo);
+
+                                    for (int i = 1; i < cant; ++i)
+                                    {
+                                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().addIndice(-1);
+                                    }
+                                    entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getClave = entidades[pos].registros.Last().element_Registro[indiceHash];
+                                    entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getDireccion = entidades[pos].registros.Last().dir_Registro;
+                                    entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
+                                    fs.asignarDirCajH(lugar);
+                                }
+                                fs.escribirDiccionarioHash();
+                                fs.escribirCajonHash(lugar);
+                            }
                             entidades[pos].primarios[auxPrimario].indice[entidades[pos].primarios[auxPrimario].primario_Iteracion].IndiceP_Clave = entidades[pos].registros.Last().element_Registro[indice1];
                             entidades[pos].primarios[auxPrimario].indice[entidades[pos].primarios[auxPrimario].primario_Iteracion].IndiceP_Direccion = entidades[pos].registros.Last().dir_Registro;
 
                             entidades[pos].primarios[auxPrimario].primario_Iteracion += 1;//se suma a la posicion
 
                             fr.lisEntidades = entidades;
-                            //Refresh();
                             fr.ordenarIndice();
                             fr.escribirDatosNuevosArchivoIndice();
                             entidades = fr.lisEntidades;
@@ -1002,33 +1039,73 @@ namespace Archivos
 
                     if (entidades[pos].atributos[indiceHash].direccion_Indice != -1)
                     {
+                        if (indiceHash !=-1)
+                        {
+                            ///Lugar del 0 al 6 para posicionar el cajon 
+                            int lugar = fs.aplicarHash(entidades[pos].registros.Last().element_Registro[indiceHash].ToString());
+
+                            if (entidades[pos].hash.Last().listSecD[lugar].getDireccion != -1)
+                            {
+                                entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getClave = entidades[pos].registros.Last().element_Registro[indiceHash];
+                                entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getDireccion = entidades[pos].registros.Last().dir_Registro;
+                                entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
+                            }
+                            else
+                            {
+                                int cant = 0;
+
+                                entidades[pos].hash.Last().listSecD[lugar].agregarBloquesDirecciones(-1);
+                                cant = fs.numeroDeIteracion(entidades[pos].atributos[indiceHash].longitud_Tipo);
+
+                                for (int i = 1; i < cant; ++i)
+                                {
+                                    entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().addIndice(-1);
+                                }
+                                entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getClave = entidades[pos].registros.Last().element_Registro[indiceHash];
+                                entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getDireccion = entidades[pos].registros.Last().dir_Registro;
+                                entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
+                                fs.asignarDirCajH(lugar);
+                            }
+                            fs.escribirDiccionarioHash();
+                            fs.escribirCajonHash(lugar);
+                        }
+                    }
+                    else
+                    {
+                        Secundario s = new Secundario(-1);
+                        entidades[pos].hash.Add(s);
+
+                        for (int i = 1; i < 7; ++i)
+                        {
+                            entidades[pos].hash.Last().AddIndice(-1);
+                        }
+
+                        fs.asignarDireIndH();
+                        fs.escribirDiccionarioHash();
+
                         ///Lugar del 0 al 6 para posicionar el cajon 
                         int lugar = fs.aplicarHash(entidades[pos].registros.Last().element_Registro[indiceHash].ToString());
 
-                        if (entidades[pos].hash.Last().listSecD[lugar].getDireccion != -1)
-                        {
-                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getClave = entidades[pos].registros.Last().element_Registro[indiceHash];
-                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getDireccion = entidades[pos].registros.Last().dir_Registro;
-                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
-                        }
-                        else
-                        {
-                            int cant = 0;
+                        //MessageBox.Show("Se localizo en el cajon "+lugar);
+                        int cant = 0;
 
-                            entidades[pos].hash.Last().listSecD[lugar].agregarBloquesDirecciones(-1);
-                            cant = fs.numeroDeIteracion(entidades[pos].atributos[indiceHash].longitud_Tipo);
+                        entidades[pos].hash.Last().listSecD[lugar].agregarBloquesDirecciones(-1);
+                        cant = fs.numeroDeIteracion(entidades[pos].atributos[indiceHash].longitud_Tipo);
 
-                            for (int i = 1; i < cant; ++i)
-                            {
-                                entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().addIndice(-1);
-                            }
-                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getClave = entidades[pos].registros.Last().element_Registro[indiceHash];
-                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getDireccion = entidades[pos].registros.Last().dir_Registro;
-                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
-                            fs.asignarDirCajH(lugar);
+                        for (int i = 1; i < cant; ++i)
+                        {
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().addIndice(-1);
                         }
+
+                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getClave = entidades[pos].registros.Last().element_Registro[indiceHash];
+                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getDireccion = entidades[pos].registros.Last().dir_Registro;
+                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
+                            
+                        fs.asignarDirCajH(lugar);
+
                         fs.escribirDiccionarioHash();
                         fs.escribirCajonHash(lugar);
+
                     }
                     fr.lisEntidades = entidades;
                     //escribir el archivo 
@@ -1095,6 +1172,50 @@ namespace Archivos
                 int index = 0;
                 Raux = fr.creaNuevoRegistro(datos_registro);
                 //int cont = Raux.element_Registro.Count;
+
+                if (indiceHash != -1)
+                {
+                    int clave = int.Parse(entidades[pos].registros[elemento].element_Registro[indiceHash].ToString());
+                    int lugar = fs.aplicarHash(entidades[pos].registros.Last().element_Registro[indiceHash].ToString());
+
+                    for (int i = 0; i < entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion; ++i)
+                    {
+                        if (clave == int.Parse(entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[i].getClave.ToString()))
+                        {
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.RemoveAt(i);
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().addIndice(-1);
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion -= 1;
+                        }
+                    }
+                    fs.escribirCajonHash(lugar);
+
+                    lugar = fs.aplicarHash(Raux.element_Registro[indiceHash].ToString());
+
+                    if (entidades[pos].hash.Last().listSecD[lugar].getDireccion != -1)
+                    {
+                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getClave = Raux.element_Registro[indiceHash];
+                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion].getDireccion = entidades[pos].registros[elemento].dir_Registro;
+                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
+                    }
+                    else
+                    {
+                        int cant = 0;
+
+                        entidades[pos].hash.Last().listSecD[lugar].agregarBloquesDirecciones(-1);
+                        cant = fs.numeroDeIteracion(entidades[pos].atributos[indiceHash].longitud_Tipo);
+
+                        for (int i = 1; i < cant; ++i)
+                        {
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().addIndice(-1);
+                        }
+                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getClave = Raux.element_Registro[indiceHash];
+                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.First().getDireccion = entidades[pos].registros[elemento].dir_Registro;
+                        entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion += 1;
+                        fs.asignarDirCajH(lugar);
+                    }
+                    fs.escribirDiccionarioHash();
+                    fs.escribirCajonHash(lugar);
+                }
 
                 //If para modificar del indice secundario
                 if (indice2 != -1)
@@ -1276,6 +1397,23 @@ namespace Archivos
             {
                 int elemento = dgv_Registro.CurrentRow.Index;
 
+                if (indiceHash != -1)
+                {
+                    int clave = int.Parse(entidades[pos].registros[elemento].element_Registro[indiceHash].ToString());
+                    int lugar = fs.aplicarHash(entidades[pos].registros.Last().element_Registro[indiceHash].ToString());
+
+                    for (int i = 0; i < entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion; ++i)
+                    {
+                        if (clave == int.Parse(entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario[i].getClave.ToString()))
+                        {
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().listIndiceSecundario.RemoveAt(i);
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().addIndice(-1);
+                            entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion -= 1;
+                        }
+                    }
+                    fs.escribirCajonHash(lugar);
+                }
+
                 //Eliminar en el arbol de b+ primario
                 if (indiceA1 != -1)
                 {
@@ -1384,7 +1522,6 @@ namespace Archivos
                     //OrdenarInd();
                     //LeerOrdenacion();
                     fr.escribirDatosNuevosArchivoIndice();
-                    //EscribirArchivoInd();
                     entidades = fr.lisEntidades;
                 }
                 

@@ -630,5 +630,13 @@ namespace Archivos
             binaryWriter.Write(entidades[pos].hash.Last().listSecD[index].listSecDirs[0].getApSiguiente);
             Fichero.Close();
         }
+    
+        public void asignarDireIndH()
+        {
+            Fichero = File.Open(nombreArchivoIDX, FileMode.Open);
+            entidades[pos].atributos[indice2].direccion_Indice = Fichero.Length;
+            Fichero.Close();
+            ponerDireccionIndice(indice2);
+        }
     }
 }
