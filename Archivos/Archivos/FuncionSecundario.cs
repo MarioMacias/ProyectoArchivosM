@@ -618,7 +618,14 @@ namespace Archivos
         //Escribir en los cajones hash
         public void escribirCajonHash(int index)
         {
-            Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
+            try
+            {
+                Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
+            }catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            
             Fichero.Seek(entidades[pos].hash.Last().listSecD[index].getDireccion, SeekOrigin.Begin);
 
             binaryWriter = new BinaryWriter(Fichero);

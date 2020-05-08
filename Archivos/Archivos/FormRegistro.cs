@@ -631,6 +631,7 @@ namespace Archivos
                         fr.lisEntidades = entidades;
                         fr.asignaDatos();
                         entidades = fr.lisEntidades;
+
                         int ite = fr.numeroDeIteracion(entidades[pos].atributos[indice1].longitud_Tipo);
                         primario = new Primario(-1, -1, entidades[pos].atributos[indice1]); //clave y direccion en -1
                         entidades[pos].primarios.Add(primario);
@@ -669,7 +670,7 @@ namespace Archivos
 
                             ite = 0;
                             ite = fs.numeroDeIteracion(entidades[pos].atributos[indice2].longitud_Tipo);
-                            MessageBox.Show("574 - FormRegistro - iteracion: " + ite);
+                            //MessageBox.Show("574 - FormRegistro - iteracion: " + ite);
                             //MessageBox.Show("longitud: " + entidades[pos].atributos[indice2].longitud_Tipo.ToString());
                             Secundario s = new Secundario(-1);
 
@@ -694,7 +695,7 @@ namespace Archivos
 
                             ite = 0;
                             ite = fs.numeroDeIteracion(8);
-                            MessageBox.Show("599 - FormRegistro - iteracion: " + ite);
+                           // MessageBox.Show("599 - FormRegistro - iteracion: " + ite);
                             SecundarioCve s1 = new SecundarioCve(-1);
 
                             entidades[pos].secundarios.Last().listSecD.First().agregarBloquesDirecciones(-1);
@@ -1176,7 +1177,7 @@ namespace Archivos
                 if (indiceHash != -1)
                 {
                     int clave = int.Parse(entidades[pos].registros[elemento].element_Registro[indiceHash].ToString());
-                    int lugar = fs.aplicarHash(entidades[pos].registros.Last().element_Registro[indiceHash].ToString());
+                    int lugar = fs.aplicarHash(entidades[pos].registros[elemento].element_Registro[indiceHash].ToString());
 
                     for (int i = 0; i < entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion; ++i)
                     {
@@ -1187,6 +1188,7 @@ namespace Archivos
                             entidades[pos].hash.Last().listSecD[lugar].listSecDirs.Last().getIteracion -= 1;
                         }
                     }
+
                     fs.escribirCajonHash(lugar);
 
                     lugar = fs.aplicarHash(Raux.element_Registro[indiceHash].ToString());

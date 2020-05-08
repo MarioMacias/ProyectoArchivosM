@@ -57,22 +57,6 @@ namespace Archivos
             return indiceHash;
         }
 
-        /*Se busca en los atributos el que tenga el indice Multilista*/
-        public int buscaIndiceMultilista()
-        {
-            int i = 0;
-
-            foreach (Atributo a in entidades.ElementAt(pos).atributos)
-            {
-                if (a.tipo_Indice == 7)
-                {
-                    indiceMultilista = i;
-                }
-                else { i++; }
-            }
-            return indiceMultilista;
-        }
-
         /*Se busca en los atributos el que tenga el indice primario arbol*/
         public int buscaIndiceAprimario()
         {
@@ -166,11 +150,6 @@ namespace Archivos
             }
             indice0 = 0;
             return true;
-        }
-
-        /*Metodo para crear un nuevo archivo*/
-        private void creaArchivo()
-        {
         }
 
         /*Asignar una nueva posicion*/
@@ -282,12 +261,7 @@ namespace Archivos
         {
             int cajones = entidades[pos].primarios.Last().indice.Count;
             entidades[pos].primarios.Last().indice.RemoveRange(entidades[pos].primarios.Last().primario_Iteracion, entidades[pos].primarios.Last().indice.Count - entidades[pos].primarios.Last().primario_Iteracion);
-            //MessageBox.Show("mierda esa: " + entidades[pos].primarios.Last().indice.Last().IndiceP_Clave.ToString());
-            /* foreach (IndicePrimario ip in entidades[pos].primarios.Last().indice)
-             {
-                 MessageBox.Show("mierda esa: " + ip.IndiceP_Clave);
-             }*/
-            //entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => x.IndiceP_Clave).ToList();
+           
             if (entidades[pos].atributos[indice1].tipo_Dato == 'E')
             {
                 entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => Convert.ToInt32(x.IndiceP_Clave)).ToList();
@@ -385,7 +359,25 @@ namespace Archivos
         /*Ordenamos los datos conforme al clave de busqueda*/
         public void ordenarDatosXcB()
         {
-            //indiceCB = indiceA1;
+            if (indiceCB == -1)
+            {
+                if (indice1 != -1) //primario
+                {
+
+                }else if (indice2 != -1) //secundario
+                {
+                    indiceCB = indice2;
+                }
+                else if (indiceA1 != -1) //arbol primario
+                {
+                    indiceCB = indiceA1;
+                }
+                else if (indiceHash != -1) //indice hash
+                {
+                    indiceCB = indiceHash;
+                }
+            }
+
             if (indiceCB != -1)
             {
                 try

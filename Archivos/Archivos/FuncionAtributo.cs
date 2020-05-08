@@ -18,7 +18,7 @@ namespace Archivos
         FileStream Fichero;
 
         int pos;
-
+        public long dirIndiceForanea = -1;
         string nombreArchivo;
 
         /*Asigna una nueva direccion random a la identidad*/
@@ -56,7 +56,16 @@ namespace Archivos
             this.nombreArchivo = nombreArchivo;
             this.entidades = entidades;
             Fichero = new FileStream(nombreArchivo, FileMode.Open, FileAccess.Write);
-            entidades.ElementAt(pos).atributos.Last().direccion_Atributo = Fichero.Length;
+
+            if (dirIndiceForanea != -1)
+            {
+                entidades.ElementAt(pos).atributos.Last().direccion_Atributo = dirIndiceForanea;
+            }
+            else
+            {
+                entidades.ElementAt(pos).atributos.Last().direccion_Atributo = Fichero.Length;
+            }
+            
             Fichero.Position = Fichero.Length;
             binaryWriter = new BinaryWriter(Fichero);
 
@@ -207,8 +216,11 @@ namespace Archivos
         }
 
         /*Modificar los atributos seleccionados*/
-        public bool modificaAtributoSel(string nom, string indice, string tipo, string longi, int pos, List<Entidad> entidades, int op)
+        public bool modificaAtributoSel(string nombreArchivo, string nom, string indice, string tipo, string longi, int pos2, List<Entidad> entidades, int op)
         {
+            this.entidades = entidades;
+            this.nombreArchivo = nombreArchivo;
+
             if (nombreRepetido(nom))
             {
                 MessageBox.Show("Nombre repedito, no se modificara.");
@@ -228,11 +240,11 @@ namespace Archivos
                 case 0: //para modificar todos
                     if (nom != "" && indice != "" && tipo != "" && longi != "")
                     {
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).nombre_Atributo = c;
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).string_Nombre = nom;
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Indice = Convert.ToInt16(indice);
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Dato = Convert.ToChar(tipo);
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).longitud_Tipo = Convert.ToInt16(longi);
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).nombre_Atributo = c;
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).string_Nombre = nom;
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).tipo_Indice = Convert.ToInt16(indice);
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).tipo_Dato = Convert.ToChar(tipo);
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).longitud_Tipo = Convert.ToInt16(longi);
                     }
                     else
                     {
@@ -242,8 +254,8 @@ namespace Archivos
                 case 1:// solo el nombre
                     if (nom != "")
                     {
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).nombre_Atributo = c;
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).string_Nombre = nom;
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).nombre_Atributo = c;
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).string_Nombre = nom;
                     }
                     else
                     {
@@ -254,7 +266,7 @@ namespace Archivos
                 case 2://tipo de dato
                     if (tipo != "")
                     {
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Dato = Convert.ToChar(tipo);
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).tipo_Dato = Convert.ToChar(tipo);
                     }
                     else
                     {
@@ -264,7 +276,7 @@ namespace Archivos
                 case 3://la longitud
                     if (longi != "")
                     {
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).longitud_Tipo = Convert.ToInt16(longi);
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).longitud_Tipo = Convert.ToInt16(longi);
                     }
                     else
                     {
@@ -275,7 +287,7 @@ namespace Archivos
                 case 4: //tipo de indice
                     if (tipo != "")
                     {
-                        entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Indice = Convert.ToInt16(indice);
+                        entidades.ElementAt(pos).atributos.ElementAt(pos2).tipo_Indice = Convert.ToInt16(indice);
                     }
                     else
                     {

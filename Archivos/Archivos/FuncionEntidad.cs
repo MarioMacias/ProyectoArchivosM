@@ -263,7 +263,7 @@ namespace Archivos
                 else
                 {
                     MessageBox.Show("Diccionario vacio");
-                    return "";
+                    return "-1";
                 }
             }
             catch (Exception e)

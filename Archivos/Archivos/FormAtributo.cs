@@ -110,6 +110,7 @@ namespace Archivos
 
                 entidades.ElementAt(pos).agregarAtributo(atributo); //Agregamos la entidad seleccionada.
                                                                     //MessageBox.Show(entidades.ElementAt(pos).atributos.Count.ToString());
+                fa.dirIndiceForanea = atributoForanea.direccion_Atributo;
                 if (fa.agregaAtributoArchivo(nombreArchivo, pos, entidades))
                 {
                     llenaDataG();
@@ -259,17 +260,16 @@ namespace Archivos
         private void modificarTodoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int posAt = dgv_Atributo.CurrentRow.Index;
-            //MessageBox.Show(posAt.ToString());
-
-            if (atributoForanea.string_Nombre == "ERR")
-            {
-                MessageBox.Show("ERR atributo");
-                return;
-            }
 
             if (Convert.ToInt16(cb_Indice.Text) == 8)
             {
-                if (fa.modificaAtributoSel(tb_Nombre.Text, atributoForanea.tipo_Indice.ToString(), atributoForanea.tipo_Dato.ToString(), atributoForanea.longitud_Tipo.ToString(), posAt, entidades, 0))
+                if (atributoForanea.string_Nombre == "ERR")
+                {
+                    MessageBox.Show("ERR atributo");
+                    return;
+                }
+
+                if (fa.modificaAtributoSel(nombreArchivo, tb_Nombre.Text, atributoForanea.tipo_Indice.ToString(), atributoForanea.tipo_Dato.ToString(), atributoForanea.longitud_Tipo.ToString(), posAt, entidades, 0))
                 {
                     tb_Nombre.Text = "";
                     tb_Longitud.Text = "";
@@ -280,7 +280,7 @@ namespace Archivos
                     llenaDataG();
                 }
             }
-            else if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades,0))
+            else if (fa.modificaAtributoSel(nombreArchivo, tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades,0))
             {
                 tb_Nombre.Text = "";
                 tb_Longitud.Text = "";
@@ -296,8 +296,8 @@ namespace Archivos
         private void modificarNombreToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int posAt = dgv_Atributo.CurrentRow.Index;
-
-            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 1))
+            //MessageBox.Show("Entidades: " + entidades.Count);
+            if (fa.modificaAtributoSel(nombreArchivo, tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 1))
             {
                 tb_Nombre.Text = "";
                 tb_Longitud.Text = "";
@@ -313,7 +313,7 @@ namespace Archivos
         {
             int posAt = dgv_Atributo.CurrentRow.Index;
 
-            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 2))
+            if (fa.modificaAtributoSel(nombreArchivo, tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 2))
             {
                 tb_Nombre.Text = "";
                 tb_Longitud.Text = "";
@@ -329,7 +329,7 @@ namespace Archivos
         {
             int posAt = dgv_Atributo.CurrentRow.Index;
 
-            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 3))
+            if (fa.modificaAtributoSel(nombreArchivo, tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 3))
             {
                 tb_Nombre.Text = "";
                 tb_Longitud.Text = "";
@@ -345,7 +345,7 @@ namespace Archivos
         {
             int posAt = dgv_Atributo.CurrentRow.Index;
 
-            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 4))
+            if (fa.modificaAtributoSel(nombreArchivo, tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 4))
             {
                 tb_Nombre.Text = "";
                 tb_Longitud.Text = "";
