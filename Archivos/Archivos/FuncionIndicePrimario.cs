@@ -107,6 +107,7 @@ namespace Archivos
             bool ban = true;
             object o = new object();
             long dat = 0;
+            //MessageBox.Show("nombre archivo: " + nombreArchivoIndice);
             Fichero = new FileStream(nombreArchivoIndice, FileMode.Open, FileAccess.Read);
             binaryReader = new BinaryReader(Fichero);
             binaryReader.BaseStream.Seek(entidades[pos].atributos[indice1].direccion_Indice, SeekOrigin.Begin);

@@ -72,5 +72,17 @@ namespace Archivos
             datosDataG();
         }
 
+        private void tb_Buscar_TextChanged(object sender, EventArgs e)
+        {
+            dgv_Entidad.Rows.Clear();
+
+            foreach (Entidad en in entidades)
+            {
+                if (en.string_Nombre.Contains(tb_Buscar.Text))
+                {
+                    dgv_Entidad.Rows.Add(en.string_Nombre, en.direccion_Entidad, en.direccion_Atributo, en.direccion_Dato, en.direccion_Siguiente);
+                }
+            }
+        }
     }
 }

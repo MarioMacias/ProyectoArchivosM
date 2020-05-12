@@ -61,6 +61,12 @@
     <Compile Include="ConsultaEntidad.Designer.cs">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConsultaRegistros.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsultaRegistros.Designer.cs">
+      <DependentUpon>ConsultaRegistros.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entidad.cs" />
     <Compile Include="Arboles\FormArbolPrimario.cs">
       <SubType>Form</SubType>
@@ -127,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConsultaEntidad.resx">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsultaRegistros.resx">
+      <DependentUpon>ConsultaRegistros.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAtributo.resx">
       <DependentUpon>FormAtributo.cs</DependentUpon>

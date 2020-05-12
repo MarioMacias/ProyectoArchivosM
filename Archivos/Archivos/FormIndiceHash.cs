@@ -38,7 +38,7 @@ namespace Archivos
         {
             dgv_IndiceHash.DataSource = null;
             dgv_IndiceHash.Columns.Add("Direccion", "Direccion");
-            MessageBox.Show("tiene: " + entidades[pos].hash.Last().listSecD.Count);
+            //MessageBox.Show("tiene: " + entidades[pos].hash.Last().listSecD.Count);
             for (int i = 0; i < entidades[pos].hash.Last().listSecD.Count; ++i)
             {
                 dgv_IndiceHash.Rows.Add(entidades[pos].hash.Last().listSecD[i].getDireccion);

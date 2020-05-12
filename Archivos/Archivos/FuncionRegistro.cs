@@ -20,6 +20,8 @@ namespace Archivos
         private int indiceA2 = -1; //Arbol secundario
         private int indiceHash = -1; //indice hash
         private int indiceMultilista = -1; //indice multilista
+        public int tipoOrg = -1;
+        private static int TAM = 30;
 
         private Registro registro;
         List<object> datos_registro;
@@ -361,21 +363,14 @@ namespace Archivos
         {
             if (indiceCB == -1)
             {
-                if (indice1 != -1) //primario
+                if (tipoOrg == 2) //primario
                 {
-
-                }else if (indice2 != -1) //secundario
-                {
-                    indiceCB = indice2;
+                    //secuencialIndexado
+                    indiceCB = indice1;
                 }
-                else if (indiceA1 != -1) //arbol primario
-                {
-                    indiceCB = indiceA1;
-                }
-                else if (indiceHash != -1) //indice hash
-                {
-                    indiceCB = indiceHash;
-                }
+            }else if (tipoOrg == 2)
+            {
+                indiceCB = indice1;
             }
 
             if (indiceCB != -1)
@@ -489,57 +484,75 @@ namespace Archivos
         /*Asignar datos en la memoria*/
         public void asignaDatosDat()
         {
-            try
+            // try
+            // {
+            foreach (Entidad entidad in entidades)
             {
-                bool ban = true;
-                bool banA;
-                long dat = 0;
-                int nA = entidades.ElementAt(pos).atributos.Count() - 1;
-                Fichero = new FileStream(nombreArchivoDAT, FileMode.Open, FileAccess.Read);
-                binaryReader = new BinaryReader(Fichero);
-                binaryReader.BaseStream.Seek(entidades.ElementAt(pos).direccion_Dato, SeekOrigin.Begin);
-                while (ban)
+                if (entidad.direccion_Dato != -1)
                 {
-                    dat = binaryReader.ReadInt64();
-                    registro = new Registro(dat);
-                    entidades.ElementAt(pos).registros.Add(registro);
-                    banA = true;
-                    int i = 0;
-                    while (banA)
-                    {
-                        switch (entidades.ElementAt(pos).atributos[i].tipo_Dato)
-                        {
-                            case 'E':
-                                int en = binaryReader.ReadInt32();
-                                entidades.ElementAt(pos).registros.Last().element_Registro.Add(en);
-                                break;
-                            case 'C':
-                                char[] c = binaryReader.ReadChars(entidades.ElementAt(pos).atributos[i].longitud_Tipo);
-                                string cadena = new string(c);
-                                entidades.ElementAt(pos).registros.Last().element_Registro.Add(cadena);
-                                break;
-                        }
-                        if (i < nA)
-                        {
-                            i++;
-                        }
-                        else { banA = false; }
-                    }
-                    dat = binaryReader.ReadInt64();
-                    entidades.ElementAt(pos).registros.Last().dir_sigRegistro = dat;
+                    bool ban = true;
+                    bool banA;
+                    long dat = 0;
+                    //int nA = entidades.ElementAt(pos).atributos.Count() - 1;
+                    int nA = entidad.atributos.Count() - 1;
 
-                    if (dat == -1)
+                    //Fichero = new FileStream(nombreArchivoDAT, FileMode.Open, FileAccess.Read);
+                    Fichero = new FileStream(entidad.string_Nombre + ".dat", FileMode.Open, FileAccess.Read);
+                    binaryReader = new BinaryReader(Fichero);
+                    //binaryReader.BaseStream.Seek(entidades.ElementAt(pos).direccion_Dato, SeekOrigin.Begin);
+                    binaryReader.BaseStream.Seek(entidad.direccion_Dato, SeekOrigin.Begin);
+                    while (ban)
                     {
-                        ban = false;
+                        dat = binaryReader.ReadInt64();
+                        registro = new Registro(dat);
+                        //entidades.ElementAt(pos).registros.Add(registro);
+                        entidad.registros.Add(registro);
+                        banA = true;
+                        int i = 0;
+                        while (banA)
+                        {
+                            //switch (entidades.ElementAt(pos).atributos[i].tipo_Dato)
+                            switch (entidad.atributos[i].tipo_Dato)
+                            {
+                                case 'E':
+                                    int en = binaryReader.ReadInt32();
+                                    //entidades.ElementAt(pos).registros.Last().element_Registro.Add(en);
+                                    entidad.registros.Last().element_Registro.Add(en);
+                                    break;
+                                case 'C':
+                                    //char[] c = binaryReader.ReadChars(entidades.ElementAt(pos).atributos[i].longitud_Tipo);
+                                    char[] c = binaryReader.ReadChars(entidad.atributos[i].longitud_Tipo);
+
+                                    string cadena = new string(c);
+                                    //entidades.ElementAt(pos).registros.Last().element_Registro.Add(cadena);
+                                    entidad.registros.Last().element_Registro.Add(cadena);
+                                    break;
+                            }
+                            if (i < nA)
+                            {
+                                i++;
+                            }
+                            else { banA = false; }
+                        }
+                        dat = binaryReader.ReadInt64();
+                        //entidades.ElementAt(pos).registros.Last().dir_sigRegistro = dat;
+                        entidad.registros.Last().dir_sigRegistro = dat;
+
+                        if (dat == -1)
+                        {
+                            ban = false;
+                        }
+                        else { binaryReader.BaseStream.Seek(dat, SeekOrigin.Begin); }
                     }
-                    else { binaryReader.BaseStream.Seek(dat, SeekOrigin.Begin); }
+                    Fichero.Close();
                 }
-                Fichero.Close();
             }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+                
+           // }
+          //  catch (Exception e)
+           // {
+          //      MessageBox.Show(e.Message);
+          //  }
         }
         
     }

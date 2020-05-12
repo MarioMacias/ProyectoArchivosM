@@ -168,6 +168,11 @@ namespace Archivos
         {
             int pos = dgv_Entidad.CurrentRow.Index;
 
+            if (entidades[pos].direccion_Dato != -1)
+            {
+                MessageBox.Show("Existen datos guardados, no se puede eliminar.");
+                return;
+            }
             string res = fa.eliminarEntidad(pos, entidades);
 
             if (res != null)
@@ -227,22 +232,19 @@ namespace Archivos
             }
         }
 
-        /*Boton para crear un nuevo registro, el cual generara un nuevo archivo con el nombre del ID*/
-        private void nuevoRegistroToolStripMenuItem_Click(object sender, EventArgs e)
+        private long buscarEntidadForanea(int pos)
         {
-            if (dgv_Entidad.SelectedCells != null)
-            {
-                int pos = dgv_Entidad.CurrentRow.Index;
+            int i = 0;
 
-                this.Hide();
-                FormRegistro nuevoRegistro = new FormRegistro(this,fa.fileS, fa.nombreDelArchivo, entidades, pos);
-                nuevoRegistro.cambia += new FormRegistro.regresar(direccionIndice);
-                nuevoRegistro.Show();
-            }
-            else
+            foreach (Atributo atri in entidades[pos].atributos)
             {
-                MessageBox.Show("Seleccione una entidad");
+                if (atri.tipo_Indice == 8)
+                {
+                    return atri.direccion_Indice;
+                }
+                i++;
             }
+            return -1;
         }
 
         /*Actualiza la lista de entidades y vuelve a mostrar los datos actualizados en el dataG*/
@@ -319,6 +321,133 @@ namespace Archivos
                 FormIndiceHash indiceHash = new FormIndiceHash(this, entidades, pos);
                 indiceHash.cambiar += new FormIndiceHash.cambio(direccionIndice);
                 indiceHash.Show();
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una entidad");
+            }
+        }
+
+        private void registrosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            ConsultaRegistros cRegistros = new ConsultaRegistros(this, entidades);
+            cRegistros.cambia += new ConsultaRegistros.pasar(regresa);
+            cRegistros.Show();
+        }
+
+        private void secuencialToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int posicion = dgv_Entidad.CurrentRow.Index; //saber la pos de la fila que se selecciono
+
+                this.Hide();
+                FormAtributo fAtributo = new FormAtributo(this, entidades, fa.nombreArchivo, posicion);
+                fAtributo.cambia += new FormAtributo.pasar(regresa);
+                fAtributo.Show();
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una entidad para ver sus atributos.");
+            }
+        }
+
+        private void secuencialToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int pos = dgv_Entidad.CurrentRow.Index;
+
+                long posForanea = buscarEntidadForanea(pos);
+
+                if (posForanea != -1)
+                {
+                    foreach (Entidad en in entidades)
+                    {
+                        if (posForanea == en.direccion_Entidad)
+                        {
+                            if (en.direccion_Dato == -1)
+                            {
+                                MessageBox.Show("Contiene clave foranea, sin datos en la enidad", "Primero agrega registros");
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                this.Hide();
+                FormRegistro nuevoRegistro = new FormRegistro(this, fa.fileS, fa.nombreDelArchivo, entidades, pos, 1);
+                nuevoRegistro.cambia += new FormRegistro.regresar(direccionIndice);
+                nuevoRegistro.Show();
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una entidad");
+            }
+        }
+
+        private void secuencialIndexadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int pos = dgv_Entidad.CurrentRow.Index;
+
+                long posForanea = buscarEntidadForanea(pos);
+
+                if (posForanea != -1)
+                {
+                    foreach (Entidad en in entidades)
+                    {
+                        if (posForanea == en.direccion_Entidad)
+                        {
+                            if (en.direccion_Dato == -1)
+                            {
+                                MessageBox.Show("Contiene clave foranea, sin datos en la enidad", "Primero agrega registros");
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                this.Hide();
+                FormRegistro nuevoRegistro = new FormRegistro(this, fa.fileS, fa.nombreDelArchivo, entidades, pos, 2);
+                nuevoRegistro.cambia += new FormRegistro.regresar(direccionIndice);
+                nuevoRegistro.Show();
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una entidad");
+            }
+        }
+
+        private void hashEstaticoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int pos = dgv_Entidad.CurrentRow.Index;
+
+                long posForanea = buscarEntidadForanea(pos);
+
+                if (posForanea != -1)
+                {
+                    foreach (Entidad en in entidades)
+                    {
+                        if (posForanea == en.direccion_Entidad)
+                        {
+                            if (en.direccion_Dato == -1)
+                            {
+                                MessageBox.Show("Contiene clave foranea, sin datos en la enidad", "Primero agrega registros");
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                this.Hide();
+                FormRegistro nuevoRegistro = new FormRegistro(this, fa.fileS, fa.nombreDelArchivo, entidades, pos, 2);
+                nuevoRegistro.cambia += new FormRegistro.regresar(direccionIndice);
+                nuevoRegistro.Show();
             }
             else
             {

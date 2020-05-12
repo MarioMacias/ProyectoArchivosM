@@ -49,10 +49,13 @@
             this.indiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.primarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.secundarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.árbolBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indicePrimarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indiceSecundarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consultaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.datosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.registrosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbl_Cabecera = new System.Windows.Forms.Label();
             this.btn_CrearEntidad = new System.Windows.Forms.Button();
             this.btn_Modificar = new System.Windows.Forms.Button();
@@ -61,7 +64,9 @@
             this.btn_Atributo = new System.Windows.Forms.Button();
             this.lb_atributo = new System.Windows.Forms.Label();
             this.tb_modificar = new System.Windows.Forms.TextBox();
-            this.hashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secuencialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secuencialIndexadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hashEstaticoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Entidad)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -181,11 +186,14 @@
             // 
             // nuevoRegistroToolStripMenuItem
             // 
+            this.nuevoRegistroToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.secuencialToolStripMenuItem,
+            this.secuencialIndexadoToolStripMenuItem,
+            this.hashEstaticoToolStripMenuItem});
             this.nuevoRegistroToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.nuevoRegistroToolStripMenuItem.Name = "nuevoRegistroToolStripMenuItem";
-            this.nuevoRegistroToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
-            this.nuevoRegistroToolStripMenuItem.Text = "Datos";
-            this.nuevoRegistroToolStripMenuItem.Click += new System.EventHandler(this.nuevoRegistroToolStripMenuItem_Click);
+            this.nuevoRegistroToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
+            this.nuevoRegistroToolStripMenuItem.Text = "Agregar Datos";
             // 
             // indiceToolStripMenuItem
             // 
@@ -217,6 +225,15 @@
             this.secundarioToolStripMenuItem.Text = "Secundario";
             this.secundarioToolStripMenuItem.Click += new System.EventHandler(this.secundarioToolStripMenuItem_Click);
             // 
+            // hashToolStripMenuItem
+            // 
+            this.hashToolStripMenuItem.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.hashToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.hashToolStripMenuItem.Name = "hashToolStripMenuItem";
+            this.hashToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hashToolStripMenuItem.Text = "Hash";
+            this.hashToolStripMenuItem.Click += new System.EventHandler(this.hashToolStripMenuItem_Click);
+            // 
             // árbolBToolStripMenuItem
             // 
             this.árbolBToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -232,7 +249,7 @@
             this.indicePrimarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
             this.indicePrimarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.indicePrimarioBToolStripMenuItem.Name = "indicePrimarioBToolStripMenuItem";
-            this.indicePrimarioBToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.indicePrimarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.indicePrimarioBToolStripMenuItem.Text = "Primario B+";
             this.indicePrimarioBToolStripMenuItem.Click += new System.EventHandler(this.indicePrimarioBToolStripMenuItem_Click);
             // 
@@ -241,16 +258,36 @@
             this.indiceSecundarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
             this.indiceSecundarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.indiceSecundarioBToolStripMenuItem.Name = "indiceSecundarioBToolStripMenuItem";
-            this.indiceSecundarioBToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.indiceSecundarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.indiceSecundarioBToolStripMenuItem.Text = "Secundario B+";
             // 
             // consultaToolStripMenuItem
             // 
+            this.consultaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.datosToolStripMenuItem,
+            this.registrosToolStripMenuItem});
             this.consultaToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.consultaToolStripMenuItem.Name = "consultaToolStripMenuItem";
             this.consultaToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.consultaToolStripMenuItem.Text = "Consulta";
-            this.consultaToolStripMenuItem.Click += new System.EventHandler(this.consultaToolStripMenuItem_Click);
+            // 
+            // datosToolStripMenuItem
+            // 
+            this.datosToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.datosToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.datosToolStripMenuItem.Name = "datosToolStripMenuItem";
+            this.datosToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.datosToolStripMenuItem.Text = "Datos";
+            this.datosToolStripMenuItem.Click += new System.EventHandler(this.consultaToolStripMenuItem_Click);
+            // 
+            // registrosToolStripMenuItem
+            // 
+            this.registrosToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.registrosToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.registrosToolStripMenuItem.Name = "registrosToolStripMenuItem";
+            this.registrosToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.registrosToolStripMenuItem.Text = "Registros";
+            this.registrosToolStripMenuItem.Click += new System.EventHandler(this.registrosToolStripMenuItem_Click);
             // 
             // lbl_Cabecera
             // 
@@ -339,7 +376,7 @@
             this.lb_atributo.AutoSize = true;
             this.lb_atributo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lb_atributo.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lb_atributo.Location = new System.Drawing.Point(469, 447);
+            this.lb_atributo.Location = new System.Drawing.Point(466, 452);
             this.lb_atributo.Name = "lb_atributo";
             this.lb_atributo.Size = new System.Drawing.Size(20, 16);
             this.lb_atributo.TabIndex = 8;
@@ -355,14 +392,32 @@
             this.tb_modificar.Size = new System.Drawing.Size(100, 24);
             this.tb_modificar.TabIndex = 9;
             // 
-            // hashToolStripMenuItem
+            // secuencialToolStripMenuItem
             // 
-            this.hashToolStripMenuItem.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.hashToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.hashToolStripMenuItem.Name = "hashToolStripMenuItem";
-            this.hashToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.hashToolStripMenuItem.Text = "Hash";
-            this.hashToolStripMenuItem.Click += new System.EventHandler(this.hashToolStripMenuItem_Click);
+            this.secuencialToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.secuencialToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.secuencialToolStripMenuItem.Name = "secuencialToolStripMenuItem";
+            this.secuencialToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.secuencialToolStripMenuItem.Text = "Secuencial";
+            this.secuencialToolStripMenuItem.Click += new System.EventHandler(this.secuencialToolStripMenuItem_Click_1);
+            // 
+            // secuencialIndexadoToolStripMenuItem
+            // 
+            this.secuencialIndexadoToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.secuencialIndexadoToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.secuencialIndexadoToolStripMenuItem.Name = "secuencialIndexadoToolStripMenuItem";
+            this.secuencialIndexadoToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.secuencialIndexadoToolStripMenuItem.Text = "Secuencial Indexado";
+            this.secuencialIndexadoToolStripMenuItem.Click += new System.EventHandler(this.secuencialIndexadoToolStripMenuItem_Click);
+            // 
+            // hashEstaticoToolStripMenuItem
+            // 
+            this.hashEstaticoToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.hashEstaticoToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.hashEstaticoToolStripMenuItem.Name = "hashEstaticoToolStripMenuItem";
+            this.hashEstaticoToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.hashEstaticoToolStripMenuItem.Text = "Hash Estatico";
+            this.hashEstaticoToolStripMenuItem.Click += new System.EventHandler(this.hashEstaticoToolStripMenuItem_Click);
             // 
             // FormEntidad
             // 
@@ -425,6 +480,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Dir_SigEntidad;
         private System.Windows.Forms.ToolStripMenuItem consultaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hashToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem datosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem registrosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem secuencialToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem secuencialIndexadoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hashEstaticoToolStripMenuItem;
     }
 }
 

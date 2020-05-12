@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 namespace Archivos
 {
@@ -32,6 +33,11 @@ namespace Archivos
         private int indiceA1 = -1; //Arbol primario
         private int indiceA2 = -1; //Arbol secundario
         private int indiceHash = -1; //indice hash
+        private long dirClaveForanea = -1; //Si existe una clave foranea
+        private int posAtributoForaneo = -1;
+        private int posAtributoEntidFor = -1;
+        private int posEntidadForanea = -1;
+        private int tipoOrg = -1;
 
         private Registro registro;
         private Primario primario;
@@ -44,6 +50,8 @@ namespace Archivos
         public FuncionRegistro fr = new FuncionRegistro();
         public FuncionIndicePrimario fip = new FuncionIndicePrimario();
         public FuncionSecundario fs = new FuncionSecundario();
+
+        DataGridViewComboBoxColumn dgcb;
 
         //private FileStream Fichero, Fichero2;
         private FileStream Fichero;
@@ -69,16 +77,34 @@ namespace Archivos
             InitializeComponent();
         }
 
+        /*Constructor para la nueva creacion de un registro*/
+        public FormRegistro(FormEntidad formEntidad, FileStream Fichero, string nombreArchivo, List<Entidad> entidades, int pos, int tipoOrg)
+        {
+            this.tipoOrg = tipoOrg;
+            this.nombreArchivo = nombreArchivo;
+            this.Fichero = Fichero;
+            //this.Fichero2 = Fichero;
+            FicheroArPri = Fichero;
+            FicheroArSec = Fichero;
+            this.formEntidad = formEntidad;
+            this.entidades = entidades;
+            this.pos = pos;
+            fr = new FuncionRegistro();
+            fr.nuevaPosicion = pos;
+            fr.lisEntidades = entidades;
+            InitializeComponent();
+        }
+
         private void pruebaArbolToolStripMenuItem_Click(object sender, EventArgs e)
         {
             foreach (Secundario ls in entidades[pos].secundarios)
             {
                 if (ls.getDireccion != -1)
-                MessageBox.Show("Dir ls: " + ls.getDireccion + " apSig: " + ls.getApuntadorSig);
+               // MessageBox.Show("Dir ls: " + ls.getDireccion + " apSig: " + ls.getApuntadorSig);
                 foreach (SecundarioCve lsc in ls.listSecD)
                 {
                     if (lsc.getDireccion != -1)
-                        MessageBox.Show("Dir lsc: " + lsc.getDireccion + " clave" + lsc.getClave);
+                       // MessageBox.Show("Dir lsc: " + lsc.getDireccion + " clave" + lsc.getClave);
                     foreach (SecundarioDir lsd in lsc.listSecDirs)
                     {
                         if (lsd.getApSiguiente != -1)
@@ -122,38 +148,14 @@ namespace Archivos
             }*/
         }
 
-        private void FormRegistro_KeyPress(object sender, KeyPressEventArgs e)
-        {
-        }
-
         /*Aqui genera el nombre de cada columna y crea los archivos .dat, .idx. Se guarda en la clase de las funciones*/
         private void FormRegistro_Load(object sender, EventArgs e)
         {
-            //Primero agregamos la columna de la direccion del registro
-            DataGridViewTextBoxColumn columna = new DataGridViewTextBoxColumn();
-            columna.HeaderText = "Dir. Registro";
-            columna.ReadOnly = true;
-            dgv_Registro.Columns.Add(columna);
-
-            //Despues todos los nombres de los atributos
-            foreach (Atributo en in entidades.ElementAt(pos).atributos)
-            {
-                columna = new DataGridViewTextBoxColumn();
-                columna.HeaderText = en.string_Nombre;
-                columna.ReadOnly = false;
-                dgv_Registro.Columns.Add(columna);
-            }
-
-            //Al final la columna del apuntador siguiente del registro
-            columna = new DataGridViewTextBoxColumn();
-            columna.HeaderText = "Apuntador siguiente";
-            columna.ReadOnly = true;
-            dgv_Registro.Columns.Add(columna);
-
             //Aqui empiezo a crear el archivo, dependiendo de la direccion de dato, si ya existe o no, para todos los indices se ocupa.
-            
+
             if (entidades[pos].direccion_Dato == -1)
             {
+                
                 string ex = ".dat";
                 //string aux2 = BitConverter.ToString(entidades[pos].Id_Entidad);
                 string aux2 = entidades[pos].string_Nombre;
@@ -162,21 +164,27 @@ namespace Archivos
                 bandera = true;
                 Fichero = new FileStream(nombreArchivoDAT, FileMode.Create);
                 Fichero.Close();
+                if (bandera == false)
+                {
+                    bandera = true;
+                    fr.asignaDatosDat();
+                }
             }
             else
             {
                 string ex = ".dat";
                 //string aux2 = BitConverter.ToString(entidades[pos].Id_Entidad);
                 string aux2 = entidades[pos].string_Nombre;
-
                 nombreArchivoDAT = aux2;
                 nombreArchivoDAT += ex;
+
                 fr.setNameFichero(Fichero,nombreArchivoDAT, nombreArchivoIDX, nombreArchivo);
                  if (bandera == false)
                  {
                     fr.lisEntidades = entidades;
                      fr.asignaDatosDat();
-                     bandera = true;
+                    //escribirDatosData();
+                    bandera = true;
                  }
             } 
 
@@ -188,6 +196,7 @@ namespace Archivos
             indiceA1 = fr.buscaIndiceAprimario();
             indiceA2 = fr.buscaIndiceAsecundario();
             indiceHash = fr.buscaIndiceHash();
+            fr.tipoOrg = tipoOrg;
 
             //Obtenemos el archivo indice, una vez buscado
             if (indice1 != -1)
@@ -196,7 +205,7 @@ namespace Archivos
                 {
                     string ex = ".idx";
                     //string aux2 = BitConverter.ToString(entidades[pos].atributos[indice1].id_Atributo);}
-                    string aux2 = entidades[pos].atributos[indice1].string_Nombre;
+                    string aux2 = entidades[pos].string_Nombre;
 
                     nombreArchivoIDX = aux2;
                     nombreArchivoIDX += ex;
@@ -205,7 +214,7 @@ namespace Archivos
                     if (indice2 != -1)
                     {
                         //string aux3 = BitConverter.ToString(entidades[pos].atributos[indice2].id_Atributo);
-                        string aux3 = entidades[pos].atributos[indice2].string_Nombre;
+                        //string aux3 = entidades[pos].atributos[indice2].string_Nombre;
                         //nombreArchivoIDXsecundario = aux3;
                         //nombreArchivoIDXsecundario += ex;
                         //Fichero2 = new FileStream(nombreArchivoIDXsecundario, FileMode.Create);
@@ -213,9 +222,10 @@ namespace Archivos
                         fs.listEntidades = entidades;
                         fs.posicionEntidad = pos;
                         fs.posicionIndice2 = indice2;
-
+                        // MessageBox.Show("nombre FormRegistro: " + nombreArchivoIDX);
                         //fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
                         //fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos maestra
+                      //  MessageBox.Show("Primero: Form registro: " + nombreArchivoIDX);
                         fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos maestra
 
                         //Fichero2.Close();
@@ -227,7 +237,7 @@ namespace Archivos
                 {
                     string ex = ".idx";
                     //string aux2 = BitConverter.ToString(entidades[pos].atributos[indice1].id_Atributo);
-                    string aux2 = entidades[pos].atributos[indice1].string_Nombre;
+                    string aux2 = entidades[pos].string_Nombre;
 
                     nombreArchivoIDX = aux2;
                     nombreArchivoIDX += ex;
@@ -236,7 +246,7 @@ namespace Archivos
                     if (indice2 != -1)
                     {
                         //string aux3 = BitConverter.ToString(entidades[pos].atributos[indice2].id_Atributo);
-                        string aux3 = entidades[pos].atributos[indice2].string_Nombre;
+                        //string aux3 = entidades[pos].string_Nombre;
 
                         //nombreArchivoIDXsecundario = aux3;
                         //nombreArchivoIDXsecundario += ex;
@@ -244,7 +254,7 @@ namespace Archivos
                         fs.listEntidades = entidades;
                         fs.posicionEntidad = pos;
                         fs.posicionIndice2 = indice2;
-
+                       // MessageBox.Show("Primero: Form registro: " + nombreArchivoIDX);
                         //fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
                         fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
                     }
@@ -298,13 +308,13 @@ namespace Archivos
                 {
                     string ex = ".idx";
                     //string aux2 = BitConverter.ToString(entidades[pos].atributos[indice2].id_Atributo);
-                    string aux2 = entidades[pos].atributos[indice2].string_Nombre;
+                    string aux2 = entidades[pos].string_Nombre;
 
-                    //nombreArchivoIDXsecundario = aux2;
-                    //nombreArchivoIDXsecundario += ex;
+                    nombreArchivoIDX = aux2;
+                    nombreArchivoIDX += ex;
                     //Fichero2 = new FileStream(nombreArchivoIDXsecundario, FileMode.Create);
-                   // Fichero2 = new FileStream(nombreArchivoIDX, FileMode.Create);
-
+                     Fichero = new FileStream(nombreArchivoIDX, FileMode.Create);
+                    //MessageBox.Show("nom: " + nombreArchivoIDX);
                     fs.listEntidades = entidades;
                     //fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
                     fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
@@ -315,10 +325,10 @@ namespace Archivos
                 else
                 {
                     string ex = ".idx";
-                    string aux2 = entidades[pos].atributos[indice2].string_Nombre;
+                    string aux2 = entidades[pos].string_Nombre;
 
-                    //nombreArchivoIDXsecundario = aux2;
-                    //nombreArchivoIDXsecundario += ex;
+                    nombreArchivoIDX = aux2;
+                    nombreArchivoIDX += ex;
                     fs.listEntidades = entidades;
                    // fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
                     fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
@@ -345,7 +355,7 @@ namespace Archivos
                 if (entidades[pos].atributos[indiceA1].direccion_Indice == -1) //Verificamos si la direccion de indice es -1, osea que no existe ninguno
                 {
                     string ex = ".idx";
-                    string aux2 = entidades[pos].atributos[indiceA1].string_Nombre;
+                    string aux2 = entidades[pos].string_Nombre;
 
                     nombreArchivoArPri = aux2;
                     nombreArchivoArPri += ex;
@@ -372,14 +382,14 @@ namespace Archivos
                 {
                     string ex = ".idx";
                     //string aux2 = BitConverter.ToString(entidades[pos].atributos[indiceA1].id_Atributo);
-                    string aux2 = entidades[pos].atributos[indiceA1].string_Nombre;
+                    string aux2 = entidades[pos].string_Nombre;
 
                     nombreArchivoArPri = aux2;
                     nombreArchivoArPri += ex;
                     if (indiceA2 != -1)
                     {
                         //string aux3 = BitConverter.ToString(entidades[pos].atributos[indiceA2].id_Atributo);
-                        string aux3 = entidades[pos].atributos[indiceA2].string_Nombre;
+                        string aux3 = entidades[pos].string_Nombre;
 
                         nombreArchivoArSec = aux3;
                         nombreArchivoArSec += ex;
@@ -426,7 +436,7 @@ namespace Archivos
                 if (entidades[pos].atributos[indiceHash].direccion_Indice == -1)
                 {
                     string ex = ".idx";
-                    string aux2 = entidades[pos].atributos[indiceHash].string_Nombre;
+                    string aux2 = entidades[pos].string_Nombre;
 
                     fs.listEntidades = entidades;
 
@@ -455,12 +465,64 @@ namespace Archivos
                     }
                 }
             }
-            escribirDatosData();
-            fr.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
-        }
 
-        private void dgv_Registro_KeyPress(object sender, KeyPressEventArgs e)
-        {
+            if (buscaClaveForanea())
+            {
+                if (verificaClaveForanea())
+                {
+                    if (entidades[posEntidadForanea].direccion_Dato != -1)
+                    {
+                        btn_Foranea.Visible = true;
+                    }
+                    else
+                    {
+                        btn_Foranea.Visible = false;
+                    }
+                }
+            }
+
+            //Primero agregamos la columna de la direccion del registro
+            DataGridViewTextBoxColumn columna = new DataGridViewTextBoxColumn();
+            columna.HeaderText = "Dir. Registro";
+            columna.ReadOnly = true;
+            dgv_Registro.Columns.Add(columna);
+
+            int i = 0;
+            DataGridViewComboBoxColumn colCB = new DataGridViewComboBoxColumn();
+            dgcb = colCB;
+
+            foreach (Atributo en in entidades.ElementAt(pos).atributos)
+            {
+                if (en.tipo_Indice == 8)
+                {
+                    colCB = new DataGridViewComboBoxColumn();
+                    colCB.HeaderText = en.string_Nombre;
+                    colCB.ReadOnly = false;
+                    //MessageBox.Show("nombre: " + entidades[posEntidadForanea].registros[posAtributoForaneo].element_Registro[0].ToString());
+                    foreach (Registro reg in entidades[posEntidadForanea].registros)
+                    {
+                        colCB.Items.Add(reg.element_Registro[posAtributoEntidFor].ToString());
+                    }
+                    dgv_Registro.Columns.Add(colCB);
+                }
+                else
+                {
+                    columna = new DataGridViewTextBoxColumn();
+                    columna.HeaderText = en.string_Nombre;
+                    columna.ReadOnly = false;
+                    dgv_Registro.Columns.Add(columna);
+                }
+            }
+
+            //Al final la columna del apuntador siguiente del registro
+            columna = new DataGridViewTextBoxColumn();
+            columna.HeaderText = "Apuntador siguiente";
+            columna.ReadOnly = true;
+            dgv_Registro.Columns.Add(columna);
+
+            escribirDatosData();
+
+            fr.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
         }
 
         private void leerArbolToolStripMenuItem_Click(object sender, EventArgs e)
@@ -478,7 +540,7 @@ namespace Archivos
         private void btn_regresaEntidad_Click(object sender, EventArgs e)
         {
             dgv_Registro.Rows.Clear();
-
+            dgv_Registro.Columns.Clear();
             this.Close();
             cambia(formEntidad, entidades);
         }
@@ -493,6 +555,18 @@ namespace Archivos
         {
             fr.lisEntidades = entidades; //pasando la lista de entidades al primario
             fs.listEntidades = entidades; //pasando la lista de entidades al funcion secundario
+
+            if (buscaClaveForanea())
+            {
+                if (verificaClaveForanea())
+                {
+                    if (entidades[posEntidadForanea].direccion_Dato == -1)
+                    {
+                        MessageBox.Show("La entidad foranea no contiene registros, no se puede agregar.");
+                        return;
+                    }
+                }
+            }
 
             if (indice1 != -1) //Si es la primera vez, indice primario = -1;
             {
@@ -722,10 +796,6 @@ namespace Archivos
                             MessageBox.Show("Se guardo correctamente.");
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Selecciona una fila con el apuntador.");
-                }//mensaje de error
             } //Indice primario
             else if (indice2 != -1)
             {
@@ -733,6 +803,7 @@ namespace Archivos
                 {
                     registro = fr.creaNuevoRegistro(datos_registro); //creamos el registro guardando los datos
                     registro.iteraREG++;
+                    MessageBox.Show("757 - " + nombreArchivoIDX);
                     //fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
                     fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
 
@@ -1106,7 +1177,6 @@ namespace Archivos
 
                         fs.escribirDiccionarioHash();
                         fs.escribirCajonHash(lugar);
-
                     }
                     fr.lisEntidades = entidades;
                     //escribir el archivo 
@@ -1160,6 +1230,56 @@ namespace Archivos
             }//Sin clave de busqueda
 
             entidades = fr.lisEntidades;
+        }
+
+        //Buscamos la posicion de la clave foranea
+        private bool buscaClaveForanea()
+        {
+            int i = 0;
+            foreach(Atributo at in entidades[pos].atributos){
+                if (at.tipo_Indice == 8)
+                {
+                    dirClaveForanea = at.direccion_Indice;
+                    posAtributoForaneo = i;
+                    return true;
+                }
+                i++;
+            }
+            return false;
+        }
+
+        private void btn_Foranea_Click(object sender, EventArgs e)
+        {
+            int posicion = dgv_Registro.CurrentRow.Index; //saber la pos de la fila que se selecciono
+
+            ConsultaRegistros consultaR = new ConsultaRegistros(entidades, posicion);
+            consultaR.Show();
+        }
+
+        //Buscamos la entidad de la clave foranea
+        private bool verificaClaveForanea()
+        {
+            int i = 0;
+            foreach (Entidad entidad in entidades)
+            {
+                if (entidad.direccion_Entidad == dirClaveForanea)
+                {
+                    posEntidadForanea = i;
+                    int ii = 0;
+                    foreach (Atributo at in entidad.atributos)
+                    {
+                        if (at.tipo_Indice == 2)
+                        {
+                            posAtributoEntidFor = ii;
+                            return true;
+                        }
+                        ii ++;
+                    }
+                }
+                i++;
+            }
+
+            return false;
         }
 
         /*Metodo para poder modificar los datos de los registros*/
@@ -1570,13 +1690,11 @@ namespace Archivos
                     {
                         try {
                             datos_registro.Add(dgv_Registro.SelectedCells[i].Value);
-                            //string id = dgv_Registro.SelectedCells[i].Value.ToString().Length.ToString();
-                            //MessageBox.Show(id);
-                            //MessageBox.Show("total: " + datos_registro[0].ToString().Length);
                             i++;
                         }
                         catch
                         {
+                            MessageBox.Show("Algo salio mal en FormRegistro - creaListaObjetos");
                             return false;
                         }
                     }
@@ -1601,13 +1719,12 @@ namespace Archivos
         private void escribirDatosData()
         {
             dgv_Registro.Rows.Clear();
-
             int j = 0;
             foreach (Registro regis in entidades[pos].registros)
             {
                 int aux = 0;
-                dgv_Registro.Rows.Add(regis.dir_Registro); //direccion del dato, no del registro idiota
-                
+                dgv_Registro.Rows.Add(regis.dir_Registro);
+
                 for (int i = 0; i < entidades.ElementAt(pos).atributos.Count; ++i)
                 {
                     dgv_Registro.Rows[j].Cells[i + 1].Value = regis.element_Registro[i].ToString();

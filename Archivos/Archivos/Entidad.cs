@@ -64,11 +64,33 @@ namespace Archivos
         public Entidad(char[] nc)
         //public Entidad(char[] nc, byte[] IdEntidad)
         {
+            int i = 0, e = 0;
             //this.IdEntidad = IdEntidad;
-            Nombre = new char[TAM];
-            sNombre = new string(nc);
-            dirEntidad = dirAtributo = dirDato = dirSigEntidad = -1;
             Nombre = nc;
+            //sNombre = new string(nc);
+
+            char[] aux = new char[TAM];
+            char[] aux2;
+            foreach (char c in Nombre)
+            {
+                if (c != '\0')
+                {
+                    aux[i] = c;
+                    i++;
+                    e++;
+                }
+            }
+            aux2 = new char[e];
+
+            for (int j = 0; j < e; j++)
+            {
+                aux2[j] = aux[j];
+            }
+
+            sNombre = new string(aux2);
+
+            dirEntidad = dirAtributo = dirDato = dirSigEntidad = -1;
+            //Nombre = nc;
             /*Se crea su lista de atributos*/
             atributos = new List<Atributo>();
         }

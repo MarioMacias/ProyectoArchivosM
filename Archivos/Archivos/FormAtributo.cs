@@ -18,6 +18,7 @@ namespace Archivos
 
         int pos; //posicion de la fila seleccionadaf
         int posForanea;
+        private int tipoOrg = -1;
         FormEntidad formEntidad; // form de entidades
         Atributo atributo, atributoForanea; //variable para el atributo 
         FuncionAtributo fa; //variable para acceder a las funciones de los atributos
@@ -107,10 +108,11 @@ namespace Archivos
             if (Convert.ToInt16(cb_Indice.Text) == 8)
             {
                 atributo = new Atributo(tb_Nombre.Text, atributoForanea.tipo_Dato, atributoForanea.longitud_Tipo, Convert.ToInt16(cb_Indice.Text));
+                fa.dirIndiceForanea = entidades[posForanea].direccion_Entidad;
 
                 entidades.ElementAt(pos).agregarAtributo(atributo); //Agregamos la entidad seleccionada.
                                                                     //MessageBox.Show(entidades.ElementAt(pos).atributos.Count.ToString());
-                fa.dirIndiceForanea = atributoForanea.direccion_Atributo;
+                
                 if (fa.agregaAtributoArchivo(nombreArchivo, pos, entidades))
                 {
                     llenaDataG();

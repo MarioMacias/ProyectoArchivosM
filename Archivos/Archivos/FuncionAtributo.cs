@@ -59,12 +59,10 @@ namespace Archivos
 
             if (dirIndiceForanea != -1)
             {
-                entidades.ElementAt(pos).atributos.Last().direccion_Atributo = dirIndiceForanea;
+                entidades.ElementAt(pos).atributos.Last().direccion_Indice = dirIndiceForanea;
             }
-            else
-            {
+
                 entidades.ElementAt(pos).atributos.Last().direccion_Atributo = Fichero.Length;
-            }
             
             Fichero.Position = Fichero.Length;
             binaryWriter = new BinaryWriter(Fichero);

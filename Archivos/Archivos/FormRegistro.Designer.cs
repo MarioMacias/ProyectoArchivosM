@@ -37,8 +37,11 @@
             this.modificarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pruebaArbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btn_regresaEntidad = new System.Windows.Forms.Button();
             this.leerArbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btn_regresaEntidad = new System.Windows.Forms.Button();
+            this.btn_Foranea = new System.Windows.Forms.Button();
+            this.cb_foraneo = new System.Windows.Forms.ComboBox();
+            this.lbl_Foranea = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Registro)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +70,6 @@
             this.dgv_Registro.Name = "dgv_Registro";
             this.dgv_Registro.Size = new System.Drawing.Size(806, 342);
             this.dgv_Registro.TabIndex = 0;
-            this.dgv_Registro.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dgv_Registro_KeyPress);
             // 
             // menuStrip1
             // 
@@ -113,7 +115,16 @@
             this.pruebaArbolToolStripMenuItem.Name = "pruebaArbolToolStripMenuItem";
             this.pruebaArbolToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.pruebaArbolToolStripMenuItem.Text = "prueba arbol";
+            this.pruebaArbolToolStripMenuItem.Visible = false;
             this.pruebaArbolToolStripMenuItem.Click += new System.EventHandler(this.pruebaArbolToolStripMenuItem_Click);
+            // 
+            // leerArbolToolStripMenuItem
+            // 
+            this.leerArbolToolStripMenuItem.Name = "leerArbolToolStripMenuItem";
+            this.leerArbolToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
+            this.leerArbolToolStripMenuItem.Text = "Leer arbol";
+            this.leerArbolToolStripMenuItem.Visible = false;
+            this.leerArbolToolStripMenuItem.Click += new System.EventHandler(this.leerArbolToolStripMenuItem_Click);
             // 
             // btn_regresaEntidad
             // 
@@ -131,12 +142,43 @@
             this.btn_regresaEntidad.UseVisualStyleBackColor = false;
             this.btn_regresaEntidad.Click += new System.EventHandler(this.btn_regresaEntidad_Click);
             // 
-            // leerArbolToolStripMenuItem
+            // btn_Foranea
             // 
-            this.leerArbolToolStripMenuItem.Name = "leerArbolToolStripMenuItem";
-            this.leerArbolToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
-            this.leerArbolToolStripMenuItem.Text = "Leer arbol";
-            this.leerArbolToolStripMenuItem.Click += new System.EventHandler(this.leerArbolToolStripMenuItem_Click);
+            this.btn_Foranea.AutoSize = true;
+            this.btn_Foranea.BackColor = System.Drawing.Color.Black;
+            this.btn_Foranea.FlatAppearance.BorderSize = 0;
+            this.btn_Foranea.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Foranea.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btn_Foranea.Location = new System.Drawing.Point(553, 383);
+            this.btn_Foranea.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_Foranea.Name = "btn_Foranea";
+            this.btn_Foranea.Size = new System.Drawing.Size(127, 23);
+            this.btn_Foranea.TabIndex = 9;
+            this.btn_Foranea.Text = "Ver Registros Foraneos";
+            this.btn_Foranea.UseVisualStyleBackColor = false;
+            this.btn_Foranea.Visible = false;
+            this.btn_Foranea.Click += new System.EventHandler(this.btn_Foranea_Click);
+            // 
+            // cb_foraneo
+            // 
+            this.cb_foraneo.FormattingEnabled = true;
+            this.cb_foraneo.Location = new System.Drawing.Point(413, 385);
+            this.cb_foraneo.Name = "cb_foraneo";
+            this.cb_foraneo.Size = new System.Drawing.Size(121, 21);
+            this.cb_foraneo.TabIndex = 10;
+            this.cb_foraneo.Visible = false;
+            // 
+            // lbl_Foranea
+            // 
+            this.lbl_Foranea.AutoSize = true;
+            this.lbl_Foranea.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Foranea.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lbl_Foranea.Location = new System.Drawing.Point(275, 386);
+            this.lbl_Foranea.Name = "lbl_Foranea";
+            this.lbl_Foranea.Size = new System.Drawing.Size(132, 20);
+            this.lbl_Foranea.TabIndex = 11;
+            this.lbl_Foranea.Text = "Registro foraneo:";
+            this.lbl_Foranea.Visible = false;
             // 
             // FormRegistro
             // 
@@ -145,6 +187,9 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(830, 414);
+            this.Controls.Add(this.lbl_Foranea);
+            this.Controls.Add(this.cb_foraneo);
+            this.Controls.Add(this.btn_Foranea);
             this.Controls.Add(this.btn_regresaEntidad);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.dgv_Registro);
@@ -152,7 +197,6 @@
             this.Name = "FormRegistro";
             this.Text = "Registros de la entidad";
             this.Load += new System.EventHandler(this.FormRegistro_Load);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormRegistro_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Registro)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -171,5 +215,8 @@
         private System.Windows.Forms.Button btn_regresaEntidad;
         private System.Windows.Forms.ToolStripMenuItem pruebaArbolToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem leerArbolToolStripMenuItem;
+        private System.Windows.Forms.Button btn_Foranea;
+        private System.Windows.Forms.ComboBox cb_foraneo;
+        private System.Windows.Forms.Label lbl_Foranea;
     }
 }

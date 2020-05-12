@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Archivos
 {
@@ -46,7 +47,29 @@ namespace Archivos
         {
             //this.IdAtributo = IdAtributo;
             sNombre = new string(nc);
+            //MessageBox.Show("Primer nombre : " + sNombre);
             nombre = nc;
+            int i = 0, e = 0;
+            char[] aux = new char[TAM];
+            char[] aux2;
+            foreach (char c in nombre)
+            {
+                if (c != '\0')
+                {
+                    aux[i] = c;
+                    i++;
+                    e++;
+                }
+            }
+            aux2 = new char[e];
+
+            for (int j = 0; j < e; j++)
+            {
+                aux2[j] = aux[j];
+            }
+            sNombre = new string(aux2);
+
+            //MessageBox.Show("Segundo nombre: " + sNombre);
             this.tipoDato = tipoDato;
             this.longitud = longitud;
             direccionAtributo = -1;

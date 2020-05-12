@@ -138,6 +138,7 @@ namespace Archivos
         /**Se guarda la direccion del indice secundario*/
         public void asignarDireccionIndiceSecundario()
         {
+            //MessageBox.Show("nombre: " + nombreArchivoIDX);
             Fichero = File.Open(nombreArchivoIDX, FileMode.Open);
             entidades[pos].atributos[indice2].direccion_Indice = Fichero.Length;
             Fichero.Close();
@@ -486,7 +487,7 @@ namespace Archivos
                   numIte = 1040 / ite;
               }
             //MessageBox.Show("regis: " + regis);
-            MessageBox.Show("num ite: " + numIte);
+            //MessageBox.Show("num ite: " + numIte);
             return numIte;
         }
         
@@ -511,8 +512,9 @@ namespace Archivos
         {
             this.Fichero = Fichero;
             this.nombreArchivoDAT = nombreArchivoDAT;
-            this.nombreArchivoIDX = nombreArchivoIDX;
-            this.nombreArchivo = nombreArchivo;
+                this.nombreArchivoIDX = nombreArchivoIDX;
+                this.nombreArchivo = nombreArchivo;
+           // MessageBox.Show("nombre em setName: " + nombreArchivoIDX);
         }
 
         /************************AQUI EMPIEZA HASH*******************************************/
