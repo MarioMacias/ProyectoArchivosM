@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 namespace Archivos
 {
@@ -365,9 +366,15 @@ namespace Archivos
 
         private void cb_Indice_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Convert.ToInt16(cb_Indice.Text) == 8)
+            try
             {
-                claveForanea();
+                if (Convert.ToInt16(cb_Indice.Text) == 8)
+                {
+                    claveForanea();
+                }
+            }
+            catch(Exception ex){
+                //Debug.Fail(ex.Message);
             }
         }
 

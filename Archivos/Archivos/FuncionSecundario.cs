@@ -13,7 +13,8 @@ namespace Archivos
         private List<Entidad> entidades = new List<Entidad>();
         private FileStream Fichero;
         private string nombreArchivoDAT, nombreArchivoIDX, nombreArchivo;
-        private int pos, indice2;
+        private int pos;
+        public int indice2;
 
         BinaryWriter binaryWriter;
         BinaryReader binaryReader;

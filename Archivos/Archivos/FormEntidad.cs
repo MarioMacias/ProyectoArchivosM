@@ -316,9 +316,14 @@ namespace Archivos
             if (dgv_Entidad.SelectedCells != null)
             {
                 int pos = dgv_Entidad.CurrentRow.Index;
+                int posHash = posicionHash(pos);
+                if (posHash == -1)
+                {
+                    MessageBox.Show("Entidad seleccionada sin indice hash");
+                }
 
                 this.Hide();
-                FormIndiceHash indiceHash = new FormIndiceHash(this, entidades, pos);
+                FormIndiceHash indiceHash = new FormIndiceHash(this, entidades, pos, posHash);
                 indiceHash.cambiar += new FormIndiceHash.cambio(direccionIndice);
                 indiceHash.Show();
             }
@@ -328,12 +333,56 @@ namespace Archivos
             }
         }
 
+        private int posicionHash(int pos)
+        {
+            int i = 0;
+            foreach (Atributo at in entidades[pos].atributos)
+            {
+                if (at.tipo_Indice == 6)
+                {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
+        }
+
         private void registrosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            ConsultaRegistros cRegistros = new ConsultaRegistros(this, entidades);
-            cRegistros.cambia += new ConsultaRegistros.pasar(regresa);
-            cRegistros.Show();
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int posicion = dgv_Entidad.CurrentRow.Index; //saber la pos de la fila que se selecciono
+                long posForanea = buscarEntidadForanea(posicion);
+
+                if (posForanea != -1)
+                {
+                    int i = 0;
+                    foreach (Entidad en in entidades)
+                    {
+                        if (posForanea == en.direccion_Entidad)
+                        {
+                            break;
+                        }
+                        i++;
+                    }
+
+                    this.Hide();
+                    ConsultaRegistros cRegistros = new ConsultaRegistros(this, entidades, posicion, i);
+                    cRegistros.cambia += new ConsultaRegistros.pasar(regresa);
+                    cRegistros.Show();
+                }
+                else
+                {
+                    this.Hide();
+                    ConsultaRegistros cRegistros = new ConsultaRegistros(this, entidades, posicion);
+                    cRegistros.cambia += new ConsultaRegistros.pasar(regresa);
+                    cRegistros.Show();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una entidad para ver sus atributos.");
+            }
         }
 
         private void secuencialToolStripMenuItem_Click(object sender, EventArgs e)
@@ -445,13 +494,54 @@ namespace Archivos
                 }
 
                 this.Hide();
-                FormRegistro nuevoRegistro = new FormRegistro(this, fa.fileS, fa.nombreDelArchivo, entidades, pos, 2);
+                FormRegistro nuevoRegistro = new FormRegistro(this, fa.fileS, fa.nombreDelArchivo, entidades, pos, 3);
                 nuevoRegistro.cambia += new FormRegistro.regresar(direccionIndice);
                 nuevoRegistro.Show();
             }
             else
             {
                 MessageBox.Show("Seleccione una entidad");
+            }
+        }
+
+        private void consultaToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void indicePrimarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int posicion = dgv_Entidad.CurrentRow.Index; //saber la pos de la fila que se selecciono
+                long posForanea = buscarEntidadForanea(posicion);
+
+                if (posForanea != -1)
+                {
+                    int i = 0;
+                    foreach (Entidad en in entidades)
+                    {
+                        if (posForanea == en.direccion_Entidad)
+                        {
+                            break;
+                        }
+                        i++;
+                    }
+
+                   // this.Hide();
+                    BusquedaIndice bIndice = new BusquedaIndice(entidades, posicion, i);
+                    bIndice.Show();
+                }
+                else
+                {
+                    //this.Hide();
+                    BusquedaIndice bIndice = new BusquedaIndice(entidades, posicion);
+                    bIndice.Show();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una entidad para ver sus atributos.");
             }
         }
     }

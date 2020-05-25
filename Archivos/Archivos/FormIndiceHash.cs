@@ -16,13 +16,15 @@ namespace Archivos
         public delegate void cambio(FormEntidad form, List<Entidad> entidades);
         public event cambio cambiar;
 
+        int posHash;
         int pos;
         FormEntidad form;
         FileStream Fichero;
         List<Entidad> entidades = new List<Entidad>();
 
-        public FormIndiceHash(FormEntidad form, List<Entidad> entidades, int pos)
+        public FormIndiceHash(FormEntidad form, List<Entidad> entidades, int pos, int posHash)
         {
+            this.posHash = posHash;
             this.form = form;
             this.entidades = entidades;
             this.pos = pos;
@@ -32,12 +34,14 @@ namespace Archivos
         private void FormIndiceHash_Load(object sender, EventArgs e)
         {
             escribirIndice();
+            lbl_funcion.Text = "Funcion: Residuo(" + entidades[pos].atributos[posHash].string_Nombre + " , 7) + 1";
         }
 
         private void escribirIndice()
         {
             dgv_IndiceHash.DataSource = null;
             dgv_IndiceHash.Columns.Add("Direccion", "Direccion");
+            //entidades[pos].hash.Last().listSecD = entidades.ElementAt(pos).hash.Last().listSecD.OrderBy(p => p.).ToList();
             //MessageBox.Show("tiene: " + entidades[pos].hash.Last().listSecD.Count);
             for (int i = 0; i < entidades[pos].hash.Last().listSecD.Count; ++i)
             {
@@ -83,16 +87,37 @@ namespace Archivos
                 dgv_Direcciones.Columns.Add("Direccion", "Direccion");
                 dgv_Direcciones.Columns.Add("Desbordamiento", "Desbordamiento");
 
-                
-
                 int j = 0;
-
+                //poner los enteros
                 foreach (SecundarioDir ip in entidades[pos].hash.Last().listSecD[pos2].listSecDirs)
                 {
-                    for (int i = 0; i < ip.listIndiceSecundario.Count; ++i)
+                    ip.listIndiceSecundario = ip.listIndiceSecundario.OrderBy(p => Convert.ToInt32(p.getClave)).ToList();
+                    List<IndiceSecundario> auxIndOrdenado = new List<IndiceSecundario>();
+
+                    //primero se agregan los diferentes a -1
+                    foreach (IndiceSecundario se in ip.listIndiceSecundario)
                     {
+                        if(Convert.ToInt32(se.getClave) != -1)
+                        {
+                            auxIndOrdenado.Add(se);
+                        }
+                    }
+
+                    foreach (IndiceSecundario se in ip.listIndiceSecundario)
+                    {
+                        if (Convert.ToInt32(se.getClave) == -1)
+                        {
+                            auxIndOrdenado.Add(se);
+                        }
+                    }
+
+                    ip.listIndiceSecundario = auxIndOrdenado;
+
+                    for (int i = 0; i < ip.listIndiceSecundario.Count; ++i)
+                      {
                         dgv_Direcciones.Rows.Add(ip.listIndiceSecundario[i].getClave.ToString());
                         dgv_Direcciones.Rows[j].Cells[1].Value = ip.listIndiceSecundario[i].getDireccion;
+                        
                         if (i == ip.listIndiceSecundario.Count - 1)
                         {
                             dgv_Direcciones.Rows[j].Cells[2].Value = ip.getApSiguiente;

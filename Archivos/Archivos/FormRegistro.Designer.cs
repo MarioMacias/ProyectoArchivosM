@@ -38,10 +38,14 @@
             this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pruebaArbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leerArbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secuencialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secuencialIndexadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_regresaEntidad = new System.Windows.Forms.Button();
             this.btn_Foranea = new System.Windows.Forms.Button();
             this.cb_foraneo = new System.Windows.Forms.ComboBox();
             this.lbl_Foranea = new System.Windows.Forms.Label();
+            this.conClavePrimToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.otroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Registro)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -79,7 +83,9 @@
             this.modificarToolStripMenuItem,
             this.eliminarToolStripMenuItem,
             this.pruebaArbolToolStripMenuItem,
-            this.leerArbolToolStripMenuItem});
+            this.leerArbolToolStripMenuItem,
+            this.secuencialToolStripMenuItem,
+            this.secuencialIndexadoToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(830, 24);
@@ -96,6 +102,9 @@
             // 
             // modificarToolStripMenuItem
             // 
+            this.modificarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.conClavePrimToolStripMenuItem,
+            this.otroToolStripMenuItem});
             this.modificarToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.modificarToolStripMenuItem.Name = "modificarToolStripMenuItem";
             this.modificarToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
@@ -125,6 +134,24 @@
             this.leerArbolToolStripMenuItem.Text = "Leer arbol";
             this.leerArbolToolStripMenuItem.Visible = false;
             this.leerArbolToolStripMenuItem.Click += new System.EventHandler(this.leerArbolToolStripMenuItem_Click);
+            // 
+            // secuencialToolStripMenuItem
+            // 
+            this.secuencialToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.secuencialToolStripMenuItem.Name = "secuencialToolStripMenuItem";
+            this.secuencialToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
+            this.secuencialToolStripMenuItem.Text = "Secuencial";
+            this.secuencialToolStripMenuItem.Visible = false;
+            this.secuencialToolStripMenuItem.Click += new System.EventHandler(this.secuencialToolStripMenuItem_Click);
+            // 
+            // secuencialIndexadoToolStripMenuItem
+            // 
+            this.secuencialIndexadoToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.secuencialIndexadoToolStripMenuItem.Name = "secuencialIndexadoToolStripMenuItem";
+            this.secuencialIndexadoToolStripMenuItem.Size = new System.Drawing.Size(127, 20);
+            this.secuencialIndexadoToolStripMenuItem.Text = "Secuencial Indexado";
+            this.secuencialIndexadoToolStripMenuItem.Visible = false;
+            this.secuencialIndexadoToolStripMenuItem.Click += new System.EventHandler(this.secuencialIndexadoToolStripMenuItem_Click);
             // 
             // btn_regresaEntidad
             // 
@@ -180,6 +207,24 @@
             this.lbl_Foranea.Text = "Registro foraneo:";
             this.lbl_Foranea.Visible = false;
             // 
+            // conClavePrimToolStripMenuItem
+            // 
+            this.conClavePrimToolStripMenuItem.BackColor = System.Drawing.SystemColors.GrayText;
+            this.conClavePrimToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.conClavePrimToolStripMenuItem.Name = "conClavePrimToolStripMenuItem";
+            this.conClavePrimToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.conClavePrimToolStripMenuItem.Text = "Con clave prim";
+            this.conClavePrimToolStripMenuItem.Click += new System.EventHandler(this.conClavePrimToolStripMenuItem_Click);
+            // 
+            // otroToolStripMenuItem
+            // 
+            this.otroToolStripMenuItem.BackColor = System.Drawing.SystemColors.GrayText;
+            this.otroToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.otroToolStripMenuItem.Name = "otroToolStripMenuItem";
+            this.otroToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.otroToolStripMenuItem.Text = "Otro";
+            this.otroToolStripMenuItem.Click += new System.EventHandler(this.otroToolStripMenuItem_Click);
+            // 
             // FormRegistro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -218,5 +263,9 @@
         private System.Windows.Forms.Button btn_Foranea;
         private System.Windows.Forms.ComboBox cb_foraneo;
         private System.Windows.Forms.Label lbl_Foranea;
+        private System.Windows.Forms.ToolStripMenuItem secuencialToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem secuencialIndexadoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem conClavePrimToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem otroToolStripMenuItem;
     }
 }

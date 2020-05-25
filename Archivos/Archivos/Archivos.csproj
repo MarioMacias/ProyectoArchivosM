@@ -49,6 +49,12 @@
     <Compile Include="Arboles\ArbolB.cs" />
     <Compile Include="Atributo.cs" />
     <Compile Include="Arboles\ClaveBusqueda.cs" />
+    <Compile Include="BusquedaIndice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BusquedaIndice.Designer.cs">
+      <DependentUpon>BusquedaIndice.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConsultaAtributo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +133,9 @@
     <Compile Include="SecundarioDir.cs" />
     <EmbeddedResource Include="Arboles\FormArbolPrimario.resx">
       <DependentUpon>FormArbolPrimario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BusquedaIndice.resx">
+      <DependentUpon>BusquedaIndice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConsultaAtributo.resx">
       <DependentUpon>ConsultaAtributo.cs</DependentUpon>

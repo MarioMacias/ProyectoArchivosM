@@ -34,6 +34,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dgv_Direcciones = new System.Windows.Forms.DataGridView();
             this.dgv_IndiceHash = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_funcion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Direcciones)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_IndiceHash)).BeginInit();
             this.SuspendLayout();
@@ -108,12 +110,36 @@
             this.dgv_IndiceHash.TabIndex = 13;
             this.dgv_IndiceHash.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_IndiceHash_CellMouseDown);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(12, 449);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(256, 20);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Numero de cajones a utilizar: 7";
+            // 
+            // lbl_funcion
+            // 
+            this.lbl_funcion.AutoSize = true;
+            this.lbl_funcion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_funcion.ForeColor = System.Drawing.Color.White;
+            this.lbl_funcion.Location = new System.Drawing.Point(363, 449);
+            this.lbl_funcion.Name = "lbl_funcion";
+            this.lbl_funcion.Size = new System.Drawing.Size(73, 20);
+            this.lbl_funcion.TabIndex = 20;
+            this.lbl_funcion.Text = "Funcion";
+            // 
             // FormIndiceHash
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(879, 473);
+            this.Controls.Add(this.lbl_funcion);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.lbl_direccion);
             this.Controls.Add(this.lbl_Indice);
             this.Controls.Add(this.btn_regresaEntidad);
@@ -139,5 +165,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.DataGridView dgv_Direcciones;
         private System.Windows.Forms.DataGridView dgv_IndiceHash;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl_funcion;
     }
 }

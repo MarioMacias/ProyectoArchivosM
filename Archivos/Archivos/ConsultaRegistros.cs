@@ -21,10 +21,10 @@ namespace Archivos
         private List<object> datos_registro;
 
         private int pos, posForanea = -1;
-
+        private int posAtributoEntidFor = -1;
         public FuncionRegistro fr = new FuncionRegistro();
-        public FuncionIndicePrimario fip = new FuncionIndicePrimario();
-        public FuncionSecundario fs = new FuncionSecundario();
+       // public FuncionIndicePrimario fip = new FuncionIndicePrimario();
+       // public FuncionSecundario fs = new FuncionSecundario();
 
         private int formatoBusqueda = 0;
 
@@ -64,24 +64,24 @@ namespace Archivos
             formatoBusqueda = cb_Filtrar.SelectedIndex;
         }
 
-        public ConsultaRegistros(FormEntidad formEntidad, List<Entidad> entidades)
+        public ConsultaRegistros(FormEntidad formEntidad, List<Entidad> entidades, int pos)
         {
             this.formEntidad = formEntidad;
             this.entidades = entidades;
-            fr = new FuncionRegistro();
-            fr.nuevaPosicion = pos;
-            fr.lisEntidades = entidades;
-
+            // fr = new FuncionRegistro();
+            //fr.nuevaPosicion = pos;
+            //fr.lisEntidades = entidades;
+            this.pos = pos;
             InitializeComponent();
         }
 
-        public ConsultaRegistros(List<Entidad> entidades, int posForanea)
+        public ConsultaRegistros(FormEntidad formEntidad, List<Entidad> entidades, int pos, int posForanea)
         {
             this.formEntidad = formEntidad;
             this.entidades = entidades;
-            fr = new FuncionRegistro();
             this.posForanea = posForanea;
             fr.lisEntidades = entidades;
+            this.pos = pos;
 
             InitializeComponent();
         }
@@ -94,13 +94,31 @@ namespace Archivos
             columna.ReadOnly = true;
             dgv_Registro.Columns.Add(columna);
 
-            //Despues todos los nombres de los atributos
+            int i = 0;
+            DataGridViewComboBoxColumn colCB = new DataGridViewComboBoxColumn();
+
             foreach (Atributo en in entidades.ElementAt(pos).atributos)
             {
-                columna = new DataGridViewTextBoxColumn();
-                columna.HeaderText = en.string_Nombre;
-                columna.ReadOnly = false;
-                dgv_Registro.Columns.Add(columna);
+                if (en.tipo_Indice == 8)
+                {
+                    colCB = new DataGridViewComboBoxColumn();
+                    colCB.HeaderText = en.string_Nombre;
+                    colCB.ReadOnly = true;
+                    verificaClaveForanea();
+                    //MessageBox.Show("nombre: " + entidades[posEntidadForanea].registros[posAtributoForaneo].element_Registro[0].ToString());
+                    foreach (Registro reg in entidades[posForanea].registros)
+                    {
+                        colCB.Items.Add(reg.element_Registro[posAtributoEntidFor].ToString());
+                    }
+                    dgv_Registro.Columns.Add(colCB);
+                }
+                else
+                {
+                    columna = new DataGridViewTextBoxColumn();
+                    columna.HeaderText = en.string_Nombre;
+                    columna.ReadOnly = true;
+                    dgv_Registro.Columns.Add(columna);
+                }
             }
 
             //Al final la columna del apuntador siguiente del registro
@@ -110,6 +128,7 @@ namespace Archivos
             dgv_Registro.Columns.Add(columna);
 
             escribirDatosData();
+
             cb_Filtrar.Items.Clear();
 
             foreach (Atributo atributo in entidades[pos].atributos)
@@ -118,45 +137,40 @@ namespace Archivos
             }
         }
 
+        private bool verificaClaveForanea()
+        {
+            int i = 0;
+            int ii = 0;
+            foreach (Atributo at in entidades[posForanea].atributos)
+            {
+                if (at.tipo_Indice == 2)
+                {
+                    posAtributoEntidFor = ii;
+                    return true;
+                }
+                ii++;
+            }
+
+            return false;
+        }
+
         private void escribirDatosData()
         {
             dgv_Registro.Rows.Clear();
-
             int j = 0;
-
-            if (posForanea != -1)
+            foreach (Registro regis in entidades[pos].registros)
             {
-                foreach (Registro regis in entidades[posForanea].registros)
-                {
-                    int aux = 0;
-                    dgv_Registro.Rows.Add(regis.dir_Registro); //direccion del dato, no del registro idiota
+                int aux = 0;
+                dgv_Registro.Rows.Add(regis.dir_Registro);
 
-                    for (int i = 0; i < entidades.ElementAt(posForanea).atributos.Count; ++i)
-                    {
-                        dgv_Registro.Rows[j].Cells[i + 1].Value = regis.element_Registro[i].ToString();
-                        aux = i + 1;
-                    }
-                    dgv_Registro.Rows[j].Cells[aux + 1].Value = regis.dir_sigRegistro;
-                    j++;
-                }
-            }
-            else
-            {
-                foreach (Registro regis in entidades[pos].registros)
+                for (int i = 0; i < entidades.ElementAt(pos).atributos.Count; ++i)
                 {
-                    int aux = 0;
-                    dgv_Registro.Rows.Add(regis.dir_Registro); //direccion del dato, no del registro idiota
-
-                    for (int i = 0; i < entidades.ElementAt(pos).atributos.Count; ++i)
-                    {
-                        dgv_Registro.Rows[j].Cells[i + 1].Value = regis.element_Registro[i].ToString();
-                        aux = i + 1;
-                    }
-                    dgv_Registro.Rows[j].Cells[aux + 1].Value = regis.dir_sigRegistro;
-                    j++;
+                    dgv_Registro.Rows[j].Cells[i + 1].Value = regis.element_Registro[i].ToString();
+                    aux = i + 1;
                 }
+                dgv_Registro.Rows[j].Cells[aux + 1].Value = regis.dir_sigRegistro;
+                j++;
             }
-            
         }
 
         private void regresa(ConsultaEntidad fed, List<Entidad> enti)

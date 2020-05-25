@@ -82,6 +82,33 @@ namespace Archivos
 
                 int j = 0;
 
+                List<IndiceSecundario> auxInd = new List<IndiceSecundario>();
+
+                foreach (SecundarioDir ip in entidades[pos].secundarios.Last().listSecD[pos2].listSecDirs)
+                {
+                    auxInd = new List<IndiceSecundario>();
+
+                    for (int i = 0; i < ip.listIndiceSecundario.Count; ++i)
+                    {
+                        if (ip.listIndiceSecundario[i].getDireccion != -1)
+                        {
+                            auxInd.Add(ip.listIndiceSecundario[i]);
+                        }
+                    }
+
+                    auxInd = auxInd.OrderBy(x => x.getDireccion).ToList();
+
+                    for (int i = 0; i < ip.listIndiceSecundario.Count; ++i)
+                    {
+                        if (ip.listIndiceSecundario[i].getDireccion == -1)
+                        {
+                            auxInd.Add(ip.listIndiceSecundario[i]);
+                        }
+                    }
+
+                    ip.listIndiceSecundario = auxInd;
+                }
+                
                 foreach (SecundarioDir ip in entidades[pos].secundarios.Last().listSecD[pos2].listSecDirs)
                 {
                     for (int i = 0; i < ip.listIndiceSecundario.Count; ++i)

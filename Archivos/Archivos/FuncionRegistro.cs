@@ -12,13 +12,13 @@ namespace Archivos
     {
         private List<Entidad> entidades;
         private int pos = 0;
-        private int indice1 = -1; //Primario
-        private int indiceCB = -1; //Clave de busqueda
+        public int indice1 = -1; //Primario
+        public int indiceCB = -1; //Clave de busqueda
         private int indice0 = -1; //Sin clave
-        private int indice2 = -1; //Secundario
+        public int indice2 = -1; //Secundario
         private int indiceA1 = -1; //arbol primario
         private int indiceA2 = -1; //Arbol secundario
-        private int indiceHash = -1; //indice hash
+        public int indiceHash = -1; //indice hash
         private int indiceMultilista = -1; //indice multilista
         public int tipoOrg = -1;
         private static int TAM = 30;
@@ -172,7 +172,7 @@ namespace Archivos
         public bool Compara(Registro regis)
         {
             bool res = false;
-
+            //MessageBox.Show("indice1: " + indice1);
             string vs2 = regis.element_Registro[indice1].ToString(); //tipo object
 
             for (int i = 0; i < entidades[pos].primarios.Last().primario_Iteracion; ++i) //recorrer todas las iteraciones
@@ -361,18 +361,6 @@ namespace Archivos
         /*Ordenamos los datos conforme al clave de busqueda*/
         public void ordenarDatosXcB()
         {
-            if (indiceCB == -1)
-            {
-                if (tipoOrg == 2) //primario
-                {
-                    //secuencialIndexado
-                    indiceCB = indice1;
-                }
-            }else if (tipoOrg == 2)
-            {
-                indiceCB = indice1;
-            }
-
             if (indiceCB != -1)
             {
                 try
@@ -381,7 +369,7 @@ namespace Archivos
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message);
+                    //MessageBox.Show(e.Message);
                 }
                 
                 for (int i = 0; i < entidades.ElementAt(pos).registros.Count - 1; i++)
