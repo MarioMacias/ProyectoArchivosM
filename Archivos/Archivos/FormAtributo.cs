@@ -243,7 +243,7 @@ namespace Archivos
         /*Metodo para acompletar la longitud, dependiendo del tipo de dato*/
         private void cb_TipoDato_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_TipoDato.Text.CompareTo("E") == 0) //si es igual
+            if (cb_TipoDato.Text.CompareTo("E") == 0 || cb_TipoDato.Text.CompareTo("F") == 0) //si es igual
             {
                 tb_Longitud.Text = "4";
             }

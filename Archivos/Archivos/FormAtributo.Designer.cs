@@ -296,7 +296,8 @@
             this.cb_TipoDato.FormattingEnabled = true;
             this.cb_TipoDato.Items.AddRange(new object[] {
             "E",
-            "C"});
+            "C",
+            "F"});
             this.cb_TipoDato.Location = new System.Drawing.Point(161, 417);
             this.cb_TipoDato.Name = "cb_TipoDato";
             this.cb_TipoDato.Size = new System.Drawing.Size(115, 21);

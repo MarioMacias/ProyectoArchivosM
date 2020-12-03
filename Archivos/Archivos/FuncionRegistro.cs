@@ -197,6 +197,15 @@ namespace Archivos
                         {
                             res = true;
                         }
+                    }else if (entidades[pos].atributos[indice1].tipo_Dato == 'F') //Tipo de entero
+                    {
+                        float flo = float.Parse(vs);
+                        float flo2 = float.Parse(vs2);
+
+                        if (flo == flo2)
+                        {
+                            res = true;
+                        }
                     }
                 }
             }
@@ -234,6 +243,15 @@ namespace Archivos
                             {
                                 res = true;
                             }
+                        }else if (entidades[pos].atributos[indiceAr].tipo_Dato == 'F') //Tipo de entero
+                        {
+                            float flo = float.Parse(vs);
+                            float flo2 = float.Parse(vs2);
+
+                            if (flo == flo2)
+                            {
+                                res = true;
+                            }
                         }
                     }
                 }
@@ -268,10 +286,15 @@ namespace Archivos
             {
                 entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => Convert.ToInt32(x.IndiceP_Clave)).ToList();
             }
-            else
+            else if (entidades[pos].atributos[indice1].tipo_Dato == 'C')
             {
                 entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => x.IndiceP_Clave.ToString()).ToList();
+            } 
+            else if (entidades[pos].atributos[indice1].tipo_Dato == 'F')
+            {
+                entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => Convert.ToSingle(x.IndiceP_Clave)).ToList();
             }
+
             int cajones2 = entidades[pos].primarios.Last().indice.Count;
 
             for (int i = cajones2; i < cajones; ++i)
@@ -311,6 +334,10 @@ namespace Archivos
                         {
                             int entero = int.Parse(vs);
                             binaryWriter.Write(entero);
+                        }else if (entidades[pos].atributos[indice1].tipo_Dato == 'f' || entidades[pos].atributos[indice1].tipo_Dato == 'F')
+                        {
+                            float flo = float.Parse(vs);
+                            binaryWriter.Write(flo);
                         }
                     }
                     binaryWriter.Write(entidades[pos].primarios[p].indice[ip].IndiceP_Direccion);
@@ -350,6 +377,10 @@ namespace Archivos
                     {
                         int entero = int.Parse(vs);
                         binaryWriter.Write(entero);
+                    }else if (entidades[pos].atributos[i].tipo_Dato == 'F') //Si es de tipo flotante
+                    {
+                        float flo = float.Parse(vs);
+                        binaryWriter.Write(flo);
                     }
                 }
             }
@@ -420,6 +451,11 @@ namespace Archivos
                 {
                     int entero = int.Parse(vs);
                     binaryWriter.Write(entero);
+                }
+                else if (entidades[pos].atributos[i].tipo_Dato == 'F' || entidades[pos].atributos[i].tipo_Dato == 'f')
+                {
+                    float flo = float.Parse(vs);
+                    binaryWriter.Write(flo);
                 }
             }
 
@@ -514,6 +550,11 @@ namespace Archivos
                                     string cadena = new string(c);
                                     //entidades.ElementAt(pos).registros.Last().element_Registro.Add(cadena);
                                     entidad.registros.Last().element_Registro.Add(cadena);
+                                    break;
+                                case 'F':
+                                    float flo = binaryReader.ReadSingle();
+                                    //entidades.ElementAt(pos).registros.Last().element_Registro.Add(en);
+                                    entidad.registros.Last().element_Registro.Add(flo);
                                     break;
                             }
                             if (i < nA)

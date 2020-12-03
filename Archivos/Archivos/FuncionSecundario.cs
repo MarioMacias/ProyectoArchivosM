@@ -51,6 +51,11 @@ namespace Archivos
                             //MessageBox.Show(vs);
                             int entero = int.Parse(vs);
                             binaryWriter.Write(entero);
+                        }else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            //MessageBox.Show(vs);
+                            float flo = float.Parse(vs);
+                            binaryWriter.Write(flo);
                         }
                     }
                     //MessageBox.Show("Direccion1: " + entidades[pos].secundarios[s2].listSecD[s1].getDireccion);
@@ -108,6 +113,12 @@ namespace Archivos
                         {
                             int entero = int.Parse(vs);
                             binaryWriter.Write(entero);
+                        }
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            //MessageBox.Show(vs);
+                            float flo = float.Parse(vs);
+                            binaryWriter.Write(flo);
                         }
                     }
                     //MessageBox.Show("Direccion4: " + entidades[pos].secundarios[s2].listSecD[s1].getDireccion);
@@ -178,6 +189,12 @@ namespace Archivos
                             int entero = int.Parse(vs);
                             binaryWriter.Write(entero);
                         }
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            //MessageBox.Show(vs);
+                            float flo = float.Parse(vs);
+                            binaryWriter.Write(flo);
+                        }
                     }
                     binaryWriter.Write(entidades[pos].secundarios[s2].listSecD[s1].getDireccion);
                 }
@@ -189,11 +206,23 @@ namespace Archivos
         /*Ordenar los datos por la clave de busqueda*/
         public void ordenarIndiceSecundario()
         {
-            //MessageBox.Show("Hay "+ entidades[pos].secundarios.Last().listSecD.Count.ToString()+ " cajones iniciales");
             int cajones = entidades[pos].secundarios.Last().listSecD.Count;
             entidades[pos].secundarios.Last().listSecD.RemoveRange(entidades[pos].secundarios.Last().getIteracion, entidades[pos].secundarios.Last().listSecD.Count - entidades[pos].secundarios.Last().getIteracion);
-            //MessageBox.Show("mierda esa: " + entidades[pos].secundarios.Last().listSecD.Last().getClave.ToString());
-            entidades[pos].secundarios.Last().listSecD = entidades[pos].secundarios.Last().listSecD.OrderBy(x => x.getClave).ToList();
+            
+            
+            if (entidades[pos].atributos[indice2].tipo_Dato == 'E')
+            {
+                entidades[pos].secundarios.Last().listSecD = entidades[pos].secundarios.Last().listSecD.OrderBy(x => Convert.ToInt32(x.getClave)).ToList();
+            }
+            else if (entidades[pos].atributos[indice2].tipo_Dato == 'C')
+            {
+                entidades[pos].secundarios.Last().listSecD = entidades[pos].secundarios.Last().listSecD.OrderBy(x => x.getClave).ToList();
+            }
+            else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+            {
+                entidades[pos].secundarios.Last().listSecD = entidades[pos].secundarios.Last().listSecD.OrderBy(x => Convert.ToSingle(x.getClave)).ToList();
+            }
+
             int cajones2 = entidades[pos].secundarios.Last().listSecD.Count;
             
             for (int i = cajones2; i < cajones; ++i)
@@ -234,6 +263,12 @@ namespace Archivos
                         {
                             int entero = int.Parse(vs);
                             binaryWriter.Write(entero);
+                        }
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            //MessageBox.Show(vs);
+                            float flo = float.Parse(vs);
+                            binaryWriter.Write(flo);
                         }
                     }
                     binaryWriter.Write(entidades[pos].secundarios[s2].listSecD[s1].getDireccion);
@@ -285,6 +320,12 @@ namespace Archivos
                         {
                             int entero = int.Parse(vs);
                             binaryWriter.Write(entero);
+                        }
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            //MessageBox.Show(vs);
+                            float flo = float.Parse(vs);
+                            binaryWriter.Write(flo);
                         }
                     }
                     binaryWriter.Write(entidades[pos].secundarios[s2].listSecD[s1].getDireccion);
@@ -352,6 +393,9 @@ namespace Archivos
                         char[] c = binaryReader.ReadChars(entidades[pos].atributos[indice2].longitud_Tipo);
                         o = new string(c);
                         break;
+                    case 'F':
+                        o = binaryReader.ReadSingle();
+                        break;
                 }
                 Secundario s1 = new Secundario(o);
                 entidades[pos].secundarios.Add(s1);
@@ -403,6 +447,9 @@ namespace Archivos
                         case 'C':
                             char[] c = binaryReader.ReadChars(entidades[pos].atributos[indice2].longitud_Tipo);
                             o = new string(c);
+                            break;
+                        case 'F':
+                            o = binaryReader.ReadSingle();
                             break;
                     }
                     entidades[pos].secundarios.Last().AddIndice(o);

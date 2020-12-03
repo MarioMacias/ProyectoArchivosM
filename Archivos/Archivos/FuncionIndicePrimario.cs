@@ -90,6 +90,10 @@ namespace Archivos
                         {
                             int entero = int.Parse(vs);
                             binaryWriter.Write(entero);
+                        }else if(entidades[pos].atributos[indice1].tipo_Dato == 'F' || entidades[pos].atributos[indice1].tipo_Dato == 'f')
+                        {
+                            float flo = float.Parse(vs);
+                            binaryWriter.Write(flo);
                         }
                     }
                     //MessageBox.Show("segun yo dat: " + entidades[pos].primarios[p].indice[ip].IndiceP_Direccion);
@@ -123,6 +127,9 @@ namespace Archivos
                         char[] c = binaryReader.ReadChars(entidades[pos].atributos[indice1].longitud_Tipo);
                         o = new string(c);
                         break;
+                    case 'F':
+                        o = binaryReader.ReadSingle();
+                        break;
                 }
                 dat = binaryReader.ReadInt64();
                 primario = new Primario(o, dat, entidades[pos].atributos[indice1]);
@@ -138,6 +145,9 @@ namespace Archivos
                         case 'C':
                             char[] c = binaryReader.ReadChars(entidades[pos].atributos[indice1].longitud_Tipo);
                             o = new string(c);
+                            break;
+                        case 'F':
+                            o = binaryReader.ReadSingle();
                             break;
                     }
 

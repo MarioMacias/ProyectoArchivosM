@@ -17,6 +17,7 @@ namespace Archivos
         public string nombreArchivo;
         private long cab; //Variable para la cabezera de las entidades;
         public string sCabe;
+        private string auxNombre;
 
         BinaryWriter binaryWriter;
         BinaryReader binaryReader;
@@ -176,9 +177,42 @@ namespace Archivos
             Fichero.Close();
         }
 
+        public void nuevoNombreArchivo()
+        {
+            string auxdat = auxNombre + ".dat";
+            string auxidx = auxNombre + ".idx";
+            string nombreArchivodat = entidad.string_Nombre + ".dat";
+            string nombreArchivoidx = entidad.string_Nombre + ".idx";
+            try
+            {
+                File.Move(auxdat, nombreArchivodat);
+                File.Move(auxidx, nombreArchivoidx);
+                if (File.Exists(auxdat))
+                    File.Delete(auxdat);
+
+                if (File.Exists(auxidx))
+                    File.Delete(auxidx);
+
+                //Console.WriteLine("{0} fue movido a {1}.", ruta1, ruta2);
+                //if (File.Exists(ruta1))
+                //{
+                //    Console.WriteLine("El archivo original sigue existiendo.");
+                //}
+                //else
+                //{
+                //    Console.WriteLine("El archivo original ya no existe.");
+                //}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al renombrar archivo: {0}", e.ToString());
+            }
+        }
+
         /*Metodo para modificar los datos*/
         public bool modificaElemento(string texto, int pos, List<Entidad> entidades)
         {
+            this.auxNombre = entidades.ElementAt(pos).string_Nombre;
             this.entidades = entidades;
             char[] c = new char[TAM];
             int i = 0;

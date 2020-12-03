@@ -144,6 +144,7 @@ namespace Archivos
 
                 if(fa.modificaElemento(tb_modificar.Text, pos, entidades))
                 {
+                    fa.nuevoNombreArchivo();
                     lbl_Cabecera.Text = fa.sCabe;
                     tb_modificar.Text = "";
                     datosDataG();

@@ -1485,12 +1485,20 @@ namespace Archivos
                                 index = i;
                             }
                         }
-                        else
+                        else if(entidades[pos].atributos[indice2].tipo_Dato == 'E')
                         {
                             int entero = int.Parse(vs2);
                             int entero2 = int.Parse(aux2);
 
                             if (entero == entero2)
+                            {
+                                index = i;
+                            }
+                        }else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            float flo = float.Parse(vs2);
+                            float flo2 = float.Parse(aux2);
+                            if (flo == flo2)
                             {
                                 index = i;
                             }
@@ -1543,12 +1551,20 @@ namespace Archivos
                                 index = i;
                             }
                         }
-                        else
+                        else if(entidades[pos].atributos[indice2].tipo_Dato == 'E')
                         {
                             int entero = int.Parse(vs2);
                             int entero2 = int.Parse(aux2);
 
                             if (entero == entero2)
+                            {
+                                index = i;
+                            }
+                        }else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            float flo = float.Parse(vs2);
+                            float flo2 = float.Parse(aux2);
+                            if (flo == flo2)
                             {
                                 index = i;
                             }
@@ -1609,12 +1625,21 @@ namespace Archivos
                                 entidades[pos].primarios[auxPrimario].indice[i].IndiceP_Clave = Raux.element_Registro[indice1];
                             }
                         }
-                        else
+                        else if(entidades[pos].atributos[indice1].tipo_Dato == 'E')
                         {
                             int entero = int.Parse(vs);
                             int entero2 = int.Parse(vs2);
 
                             if (entero == entero2)
+                            {
+                                entidades[pos].primarios[auxPrimario].indice[i].IndiceP_Clave = Raux.element_Registro[indice1];
+                            }
+                        }else if (entidades[pos].atributos[indice1].tipo_Dato == 'F')
+                        {
+                            float flo = float.Parse(vs);
+                            float flo2 = float.Parse(vs2);
+
+                            if (flo == flo2)
                             {
                                 entidades[pos].primarios[auxPrimario].indice[i].IndiceP_Clave = Raux.element_Registro[indice1];
                             }
@@ -1730,12 +1755,22 @@ namespace Archivos
                                 index = i;
                             }
                         }
-                        else
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'E')
                         {
                             int entero = int.Parse(vs2);
                             int entero2 = int.Parse(aux2);
 
                             if (entero == entero2)
+                            {
+                                index = i;
+                            }
+                        }
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            float flo = float.Parse(vs2);
+                            float flo2 = float.Parse(aux2);
+
+                            if (flo == flo2)
                             {
                                 index = i;
                             }
@@ -1788,12 +1823,22 @@ namespace Archivos
                                 index = i;
                             }
                         }
-                        else
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'E')
                         {
                             int entero = int.Parse(vs2);
                             int entero2 = int.Parse(aux2);
 
                             if (entero == entero2)
+                            {
+                                index = i;
+                            }
+                        }
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            float flo = float.Parse(vs2);
+                            float flo2 = float.Parse(aux2);
+
+                            if (flo == flo2)
                             {
                                 index = i;
                             }
@@ -1854,12 +1899,22 @@ namespace Archivos
                                 entidades[pos].primarios[auxPrimario].indice[i].IndiceP_Clave = Raux.element_Registro[indice1];
                             }
                         }
-                        else
+                        else if (entidades[pos].atributos[indice1].tipo_Dato == 'E')
                         {
                             int entero = int.Parse(vs);
                             int entero2 = int.Parse(vs2);
 
                             if (entero == entero2)
+                            {
+                                entidades[pos].primarios[auxPrimario].indice[i].IndiceP_Clave = Raux.element_Registro[indice1];
+                            }
+                        }
+                        else if (entidades[pos].atributos[indice1].tipo_Dato == 'F')
+                        {
+                            float flo = float.Parse(vs);
+                            float flo2 = float.Parse(vs2);
+
+                            if (flo == flo2)
                             {
                                 entidades[pos].primarios[auxPrimario].indice[i].IndiceP_Clave = Raux.element_Registro[indice1];
                             }
@@ -1972,12 +2027,22 @@ namespace Archivos
                                 index = i;
                             }
                         }
-                        else
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'E')
                         {
                             int entero = int.Parse(aux);
                             int entero2 = int.Parse(aux2);
 
                             if (entero == entero2)
+                            {
+                                index = i;
+                            }
+                        }
+                        else if (entidades[pos].atributos[indice2].tipo_Dato == 'F')
+                        {
+                            float flo = float.Parse(aux);
+                            float flo2 = float.Parse(aux2);
+
+                            if (flo == flo2)
                             {
                                 index = i;
                             }
@@ -2030,12 +2095,22 @@ namespace Archivos
                                 entidades[pos].primarios[auxPrimario].indice.RemoveAt(i);
                             }
                         }
-                        else
+                        else if (entidades[pos].atributos[indice1].tipo_Dato == 'E')
                         {
                             int entero = int.Parse(vs);
                             int entero2 = int.Parse(vs2);
 
                             if (entero == entero2)
+                            {
+                                entidades[pos].primarios[auxPrimario].indice.RemoveAt(i);
+                            }
+                        }
+                        else if (entidades[pos].atributos[indice1].tipo_Dato == 'F')
+                        {
+                            float flo = float.Parse(vs);
+                            float flo2 = float.Parse(vs2);
+
+                            if (flo == flo2)
                             {
                                 entidades[pos].primarios[auxPrimario].indice.RemoveAt(i);
                             }
