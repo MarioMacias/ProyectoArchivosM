@@ -54,6 +54,7 @@ namespace Archivos
         {
             dgv_Consulta.Rows.Clear();
             int j = 0, i = 0;
+            
             foreach (Registro regis in entidades[pos].registros)
             {
                 dgv_Consulta.Rows.Add();
@@ -61,8 +62,23 @@ namespace Archivos
                 {
                     for (i = 0; i < entidades.ElementAt(pos).atributos.Count; i++)
                     {
-                        dgv_Consulta.Rows[j].Cells[i].Value = regis.element_Registro[i].ToString();
-                        //MessageBox.Show(regis.element_Registro[i].ToString());
+                        if (WhereList.Count > 0) //si tiene where
+                        {
+                            if (cumpleWhere(regis))
+                            {
+                                dgv_Consulta.Rows[j].Cells[i].Value = regis.element_Registro[i].ToString();
+                                //MessageBox.Show(regis.element_Registro[i].ToString());
+                            }
+                            else
+                            {
+                                //dgv_Consulta.Rows.RemoveAt(j);
+                            }
+                        }
+                        else
+                        {
+                            dgv_Consulta.Rows[j].Cells[i].Value = regis.element_Registro[i].ToString();
+                            //MessageBox.Show(regis.element_Registro[i].ToString());
+                        }
                     }
                     j++;
                 }
@@ -71,17 +87,99 @@ namespace Archivos
                     i = 0;
                     foreach (int p in posAtributos)
                     {
-                        dgv_Consulta.Rows[j].Cells[i].Value = regis.element_Registro[p].ToString();
-                        i++;
-                        //MessageBox.Show(regis.element_Registro[p].ToString());
+                        if (WhereList.Count > 0) //si tiene where
+                        {
+                            if (cumpleWhere(regis))
+                            {
+                                dgv_Consulta.Rows[j].Cells[i].Value = regis.element_Registro[p].ToString();
+                                i++;
+                            }
+                            else
+                            {
+                                //dgv_Consulta.Rows.RemoveAt(j);
+                            }
+                        }
+                        else
+                        {
+                            dgv_Consulta.Rows[j].Cells[i].Value = regis.element_Registro[p].ToString();
+                            i++;
+                        }
                     }
-                    //for (int i = 0; i < entidades.ElementAt(pos).atributos.Count; ++i)
-                    //{
-                    //    dgv_Consulta.Rows[j].Cells[i + 1].Value = regis.element_Registro[i].ToString();
-                    //}
                     j++;
                 }
             }
+        }
+
+        private bool cumpleWhere(Registro regis)
+        {
+            int posAux = buscaAtributo(WhereList[0]);
+            int comp = Convert.ToInt32(WhereList[2]);
+            bool band = false;
+
+            switch (WhereList[1])
+            {
+                case "=":
+                    if (Convert.ToInt32(regis.element_Registro[posAux]) == comp)
+                    {
+                        band = true;
+                    }
+                    else
+                    {
+                        band = false;
+                    }
+                    break;
+                case ">":
+                    if (Convert.ToInt32(regis.element_Registro[posAux]) > comp)
+                    {
+                        band = true;
+                    }
+                    else
+                    {
+                        band = false;
+                    }
+                    break;
+                case "<":
+                    if (Convert.ToInt32(regis.element_Registro[posAux]) < comp)
+                    {
+                        band = true;
+                    }
+                    else
+                    {
+                        band = false;
+                    }
+                    break;
+                case ">=":
+                    if (Convert.ToInt32(regis.element_Registro[posAux]) >= comp)
+                    {
+                        band = true;
+                    }
+                    else
+                    {
+                        band = false;
+                    }
+                    break;
+                case "<=":
+                    if (Convert.ToInt32(regis.element_Registro[posAux]) <= comp)
+                    {
+                        band = true;
+                    }
+                    else
+                    {
+                        band = false;
+                    }
+                    break;
+                case "<>":
+                    if (Convert.ToInt32(regis.element_Registro[posAux]) != comp)
+                    {
+                        band = true;
+                    }
+                    else
+                    {
+                        band = false;
+                    }
+                    break;
+            }
+            return band;
         }
 
         private void iniciaTabla()
@@ -148,6 +246,20 @@ namespace Archivos
                     }
                 }
             }
+        }
+
+        private int buscaAtributo(string nomAt)
+        {
+            int i = 0;
+            foreach (Atributo a in entidades[pos].atributos)
+            {
+                if (a.string_Nombre.Equals(nomAt))
+                {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
         }
         private void verificaCodigo(string comand)
         {
@@ -252,7 +364,8 @@ namespace Archivos
                     {
                         if (pComm.ToUpper().CompareTo("WHERE") != 0)
                             WhereList.Add(pComm);
-                        //MessageBox.Show(pComm + " where");
+                        if (pComm.ToUpper().CompareTo("WHERE") != 0)
+                            MessageBox.Show(pComm + " where");
                     }
                     else if (iner)
                     {
