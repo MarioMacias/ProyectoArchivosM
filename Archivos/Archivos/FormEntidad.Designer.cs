@@ -68,6 +68,7 @@
             this.btn_Atributo = new System.Windows.Forms.Button();
             this.lb_atributo = new System.Windows.Forms.Label();
             this.tb_modificar = new System.Windows.Forms.TextBox();
+            this.ejecutarSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Entidad)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -154,7 +155,8 @@
             this.nuevoRegistroToolStripMenuItem,
             this.indiceToolStripMenuItem,
             this.árbolBToolStripMenuItem,
-            this.consultaToolStripMenuItem});
+            this.consultaToolStripMenuItem,
+            this.ejecutarSQLToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(721, 24);
@@ -212,6 +214,7 @@
             this.secuencialIndexadoToolStripMenuItem.Name = "secuencialIndexadoToolStripMenuItem";
             this.secuencialIndexadoToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.secuencialIndexadoToolStripMenuItem.Text = "Secuencial Indexado";
+            this.secuencialIndexadoToolStripMenuItem.Visible = false;
             this.secuencialIndexadoToolStripMenuItem.Click += new System.EventHandler(this.secuencialIndexadoToolStripMenuItem_Click);
             // 
             // hashEstaticoToolStripMenuItem
@@ -221,6 +224,7 @@
             this.hashEstaticoToolStripMenuItem.Name = "hashEstaticoToolStripMenuItem";
             this.hashEstaticoToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.hashEstaticoToolStripMenuItem.Text = "Hash Estatico";
+            this.hashEstaticoToolStripMenuItem.Visible = false;
             this.hashEstaticoToolStripMenuItem.Click += new System.EventHandler(this.hashEstaticoToolStripMenuItem_Click);
             // 
             // indiceToolStripMenuItem
@@ -240,7 +244,7 @@
             this.primarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
             this.primarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.primarioToolStripMenuItem.Name = "primarioToolStripMenuItem";
-            this.primarioToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.primarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.primarioToolStripMenuItem.Text = "Primario";
             this.primarioToolStripMenuItem.Click += new System.EventHandler(this.primarioToolStripMenuItem_Click);
             // 
@@ -249,7 +253,7 @@
             this.secundarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.secundarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.secundarioToolStripMenuItem.Name = "secundarioToolStripMenuItem";
-            this.secundarioToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.secundarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.secundarioToolStripMenuItem.Text = "Secundario";
             this.secundarioToolStripMenuItem.Click += new System.EventHandler(this.secundarioToolStripMenuItem_Click);
             // 
@@ -258,8 +262,9 @@
             this.hashToolStripMenuItem.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.hashToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.hashToolStripMenuItem.Name = "hashToolStripMenuItem";
-            this.hashToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.hashToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.hashToolStripMenuItem.Text = "Hash";
+            this.hashToolStripMenuItem.Visible = false;
             this.hashToolStripMenuItem.Click += new System.EventHandler(this.hashToolStripMenuItem_Click);
             // 
             // árbolBToolStripMenuItem
@@ -271,13 +276,14 @@
             this.árbolBToolStripMenuItem.Name = "árbolBToolStripMenuItem";
             this.árbolBToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.árbolBToolStripMenuItem.Text = "Árbol B+";
+            this.árbolBToolStripMenuItem.Visible = false;
             // 
             // indicePrimarioBToolStripMenuItem
             // 
             this.indicePrimarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
             this.indicePrimarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.indicePrimarioBToolStripMenuItem.Name = "indicePrimarioBToolStripMenuItem";
-            this.indicePrimarioBToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.indicePrimarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.indicePrimarioBToolStripMenuItem.Text = "Primario B+";
             this.indicePrimarioBToolStripMenuItem.Click += new System.EventHandler(this.indicePrimarioBToolStripMenuItem_Click);
             // 
@@ -286,7 +292,7 @@
             this.indiceSecundarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
             this.indiceSecundarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.indiceSecundarioBToolStripMenuItem.Name = "indiceSecundarioBToolStripMenuItem";
-            this.indiceSecundarioBToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.indiceSecundarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.indiceSecundarioBToolStripMenuItem.Text = "Secundario B+";
             // 
             // consultaToolStripMenuItem
@@ -306,7 +312,7 @@
             this.datosToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.datosToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.datosToolStripMenuItem.Name = "datosToolStripMenuItem";
-            this.datosToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.datosToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.datosToolStripMenuItem.Text = "Datos";
             this.datosToolStripMenuItem.Click += new System.EventHandler(this.consultaToolStripMenuItem_Click);
             // 
@@ -315,7 +321,7 @@
             this.registrosToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.registrosToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.registrosToolStripMenuItem.Name = "registrosToolStripMenuItem";
-            this.registrosToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.registrosToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.registrosToolStripMenuItem.Text = "Registros";
             this.registrosToolStripMenuItem.Click += new System.EventHandler(this.registrosToolStripMenuItem_Click);
             // 
@@ -324,7 +330,7 @@
             this.indicePriToolStripMenuItem.BackColor = System.Drawing.SystemColors.GrayText;
             this.indicePriToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.indicePriToolStripMenuItem.Name = "indicePriToolStripMenuItem";
-            this.indicePriToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.indicePriToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.indicePriToolStripMenuItem.Text = "Indices";
             this.indicePriToolStripMenuItem.Click += new System.EventHandler(this.indicePrimarioToolStripMenuItem_Click);
             // 
@@ -350,7 +356,7 @@
             this.btn_CrearEntidad.Name = "btn_CrearEntidad";
             this.btn_CrearEntidad.Size = new System.Drawing.Size(92, 23);
             this.btn_CrearEntidad.TabIndex = 3;
-            this.btn_CrearEntidad.Text = "Nueva entidad";
+            this.btn_CrearEntidad.Text = "Nueva tabla";
             this.btn_CrearEntidad.UseVisualStyleBackColor = false;
             this.btn_CrearEntidad.Click += new System.EventHandler(this.btn_CrearEntidad_Click);
             // 
@@ -431,6 +437,14 @@
             this.tb_modificar.Size = new System.Drawing.Size(100, 24);
             this.tb_modificar.TabIndex = 9;
             // 
+            // ejecutarSQLToolStripMenuItem
+            // 
+            this.ejecutarSQLToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.ejecutarSQLToolStripMenuItem.Name = "ejecutarSQLToolStripMenuItem";
+            this.ejecutarSQLToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
+            this.ejecutarSQLToolStripMenuItem.Text = "Ejecutar SQL";
+            this.ejecutarSQLToolStripMenuItem.Click += new System.EventHandler(this.ejecutarSQLToolStripMenuItem_Click);
+            // 
             // FormEntidad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -498,6 +512,7 @@
         private System.Windows.Forms.ToolStripMenuItem secuencialIndexadoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hashEstaticoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem indicePriToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ejecutarSQLToolStripMenuItem;
     }
 }
 

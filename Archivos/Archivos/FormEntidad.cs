@@ -545,5 +545,12 @@ namespace Archivos
                 MessageBox.Show("Seleccione una entidad para ver sus atributos.");
             }
         }
+
+        private void ejecutarSQLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormSQL sql = new FormSQL(this, fa.fileS, fa.nombreDelArchivo, entidades);
+            //sql.cambia += new FormAtributo.pasar(regresa);
+            sql.Show();
+        }
     }
 }
